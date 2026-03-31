@@ -71,7 +71,7 @@ jobs:
       - name: Run actionlint
         if: github.event_name != 'pull_request'
         run: |
-          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.11
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
           "$(go env GOPATH)/bin/actionlint" -color
 
       - name: Run actionlint (reviewdog)
