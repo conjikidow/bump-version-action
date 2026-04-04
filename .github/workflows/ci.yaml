@@ -292,7 +292,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Commitizen
-        uses: commitizen-tools/setup-cz@578def531656e522cd8978e6df62d626593e0a5f # v0.7.0
+        uses: commitizen-tools/setup-cz@35ba1f590034c467c30355832e6b5cf873b82f6c # v0.8.0
         with:
           python-version: '3.x'
           version: '4.13.9'
