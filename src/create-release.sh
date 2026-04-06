@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-if ! command -v gh &> /dev/null; then
-    echo "Error: GitHub CLI (gh) is not installed. Please install it to continue." >&2
-    exit 1
+if ! command -v gh &>/dev/null; then
+  echo "Error: GitHub CLI (gh) is not installed. Please install it to continue." >&2
+  exit 1
 fi
 
 NEW_VERSION_TAG="v${NEW_VERSION}"

@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-if ! command -v gh &> /dev/null; then
-    echo "Error: GitHub CLI (gh) is not installed. Please install it to continue." >&2
-    exit 1
+if ! command -v gh &>/dev/null; then
+  echo "Error: GitHub CLI (gh) is not installed. Please install it to continue." >&2
+  exit 1
 fi
 
 # Fetch PR labels
@@ -14,7 +14,7 @@ echo "Found labels: ${labels}"
 # Return success if a non-empty label name is found inside $labels
 has_label() {
   local needle=$1
-  [[ -n "$needle" && "$labels" == *"$needle"* ]]
+  [[ -n $needle && $labels == *"$needle"* ]]
 }
 
 # Determine bump type
@@ -30,4 +30,4 @@ fi
 echo "Bump type determined: ${bump_type}"
 
 # Output results for GitHub Actions
-echo "type=${bump_type}" >> "$GITHUB_OUTPUT"
+echo "type=${bump_type}" >>"$GITHUB_OUTPUT"
