@@ -73,7 +73,6 @@ runs:
       if: env.SKIP_JOB != 'true'
       id: bump-type
       shell: bash
-      run: ${{ github.action_path }}/src/determine-bump-type.sh
       env:
         GH_TOKEN: ${{ inputs.github-token }}
         REPO: ${{ github.repository }}
@@ -81,6 +80,7 @@ runs:
         LABEL_MAJOR: ${{ inputs.label-major }}
         LABEL_MINOR: ${{ inputs.label-minor }}
         LABEL_PATCH: ${{ inputs.label-patch }}
+      run: ${{ github.action_path }}/src/determine-bump-type.sh
 
     - name: Install uv
       if: env.SKIP_JOB != 'true' && steps.bump-type.outputs.type != 'none'
@@ -89,33 +89,33 @@ runs:
     - name: Run bump script
       if: env.SKIP_JOB != 'true' && steps.bump-type.outputs.type != 'none'
       shell: bash
-      run: ${{ github.action_path }}/src/bump-version.sh
       env:
         GH_TOKEN: ${{ inputs.github-token }}
         VERSION_OF_BUMP_MY_VERSION: ${{ inputs.version-of-bump-my-version }}
         BUMP_TYPE: ${{ steps.bump-type.outputs.type }}
         LABELS_TO_ADD: ${{ inputs.labels-to-add }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
+      run: ${{ github.action_path }}/src/bump-version.sh
 
     - name: Create tag
       if: env.SKIP_JOB != 'true'
       id: create-tag
       shell: bash
-      run: ${{ github.action_path }}/src/create-tag.sh
       env:
         GH_TOKEN: ${{ inputs.github-token }}
         HEAD_REF: ${{ github.event.pull_request.head.ref }}
         MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
+      run: ${{ github.action_path }}/src/create-tag.sh
 
     - name: Create GitHub Release
       if: env.SKIP_JOB != 'true' && inputs.create-release == 'true' && steps.create-tag.outputs.version-bumped == 'true'
       shell: bash
-      run: ${{ github.action_path }}/src/create-release.sh
       env:
         GH_TOKEN: ${{ inputs.github-token }}
         NEW_VERSION: ${{ steps.create-tag.outputs.new-version }}
         MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+      run: ${{ github.action_path }}/src/create-release.sh
 
 branding:
   icon: 'chevrons-up'
