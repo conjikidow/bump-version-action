@@ -14,7 +14,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: conjikidow/bump-version-action@959c38cd5cf835c1f671a09a5202b7da8de76a0c # v2.0.3
+      - uses: conjikidow/bump-version-action@82f8dcf6a8b9e2d2102d5fba70dafabd5ec59342 # v3.0.0
         with:
           label-major: 'update::major'
           label-minor: 'update::minor'
