@@ -8,8 +8,8 @@ permissions: {}
 
 jobs:
 
-  labeler:
-    name: labeler
+  label-pr:
+    name: Label PR
     if: github.event.action != 'edited'
     permissions:
       contents: read

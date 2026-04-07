@@ -1,23 +1,23 @@
-name: Generate Labels
+name: Sync Labels
 
 on:
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/generate-labels.yaml'
+      - '.github/workflows/sync-labels.yaml'
       - '.github/labels/label-definition.yaml'
   pull_request:
     types: [opened, synchronize, reopened, labeled]
     paths:
-      - '.github/workflows/generate-labels.yaml'
+      - '.github/workflows/sync-labels.yaml'
       - '.github/labels/label-definition.yaml'
   workflow_dispatch:
 
 jobs:
 
-  labeler:
-    name: labeler
+  sync-labels:
+    name: Sync Labels
     runs-on: ubuntu-latest
     permissions:
       contents: read
