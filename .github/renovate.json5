@@ -33,17 +33,6 @@
         '/^\\.github/workflows/ci\\.ya?ml$/',
       ],
       matchStrings: [
-        "uses: zizmorcore/zizmor-action@[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+version: '(?<currentValue>[^'\\s]+)'",
-      ],
-      datasourceTemplate: 'github-releases',
-      depNameTemplate: 'zizmorcore/zizmor',
-    },
-    {
-      customType: 'regex',
-      managerFilePatterns: [
-        '/^\\.github/workflows/ci\\.ya?ml$/',
-      ],
-      matchStrings: [
         'renovate@(?<currentValue>\\S+)',
       ],
       datasourceTemplate: 'npm',
