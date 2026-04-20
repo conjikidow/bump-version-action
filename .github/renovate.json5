@@ -22,10 +22,12 @@
         '/^\\.github/workflows/ci\\.ya?ml$/',
       ],
       matchStrings: [
-        'github\\.com/rhysd/actionlint/cmd/actionlint@(?<currentValue>v\\S+)',
+        'github\\.com/rhysd/actionlint/cmd/actionlint@(?<currentDigest>[a-f0-9]{40}) # (?<currentValue>v[^\\s]+)',
       ],
-      datasourceTemplate: 'github-releases',
+      autoReplaceStringTemplate: 'github.com/rhysd/actionlint/cmd/actionlint@{{{newDigest}}} # {{{newValue}}}',
+      datasourceTemplate: 'github-tags',
       depNameTemplate: 'rhysd/actionlint',
+      versioningTemplate: 'semver',
     },
     {
       customType: 'regex',
