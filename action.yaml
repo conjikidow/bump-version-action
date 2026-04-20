@@ -42,10 +42,10 @@ inputs:
 outputs:
   version-bumped:
     description: "`true` if the version was bumped and a new tag was created; otherwise, `false`."
-    value: ${{ steps.create-tag.outputs.version-bumped }}
+    value: ${{ steps.set-outputs.outputs.version-bumped }}
   new-version:
     description: "The new version number (e.g., `1.2.4`). This is empty when `version-bumped` is `false`."
-    value: ${{ steps.create-tag.outputs.new-version }}
+    value: ${{ steps.set-outputs.outputs.new-version }}
 
 runs:
   using: 'composite'
@@ -117,7 +117,7 @@ runs:
       run: ${{ github.action_path }}/src/bump-version.sh
 
     - name: Create tag
-      if: env.SKIP_JOB != 'true'
+      if: env.SKIP_JOB != 'true' && github.event_name == 'pull_request' && github.event.pull_request.merged == true
       id: create-tag
       shell: bash
       env:
@@ -128,13 +128,29 @@ runs:
       run: ${{ github.action_path }}/src/create-tag.sh
 
     - name: Create GitHub Release
-      if: env.SKIP_JOB != 'true' && inputs.create-release == 'true' && steps.create-tag.outputs.version-bumped == 'true'
+      if: >-
+        env.SKIP_JOB != 'true' &&
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.merged == true &&
+        inputs.create-release == 'true' &&
+        steps.create-tag.outputs.version-bumped == 'true'
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
         NEW_VERSION: ${{ steps.create-tag.outputs.new-version }}
         MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
       run: ${{ github.action_path }}/src/create-release.sh
+
+    - name: Set outputs
+      if: env.SKIP_JOB != 'true'
+      id: set-outputs
+      shell: bash
+      env:
+        VERSION_BUMPED: ${{ steps.create-tag.outputs.version-bumped }}
+        NEW_VERSION: ${{ steps.create-tag.outputs.new-version }}
+      run: |
+        echo "version-bumped=${VERSION_BUMPED:-false}" >> "$GITHUB_OUTPUT"
+        echo "new-version=${NEW_VERSION:-}" >> "$GITHUB_OUTPUT"
 
 branding:
   icon: 'chevrons-up'
