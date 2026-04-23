@@ -141,6 +141,18 @@
         '.github/workflows/ci.yaml',
         '.github/workflows/ci.yml',
       ],
+      extends: [
+        'schedule:weekly',
+      ],
+    },
+    {
+      matchDepNames: [
+        'renovate',
+      ],
+      matchFileNames: [
+        '.github/workflows/ci.yaml',
+        '.github/workflows/ci.yml',
+      ],
       matchUpdateTypes: [
         'minor',
       ],
