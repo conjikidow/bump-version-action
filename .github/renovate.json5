@@ -79,10 +79,10 @@
         '/^\\.github/workflows/ci\\.ya?ml$/',
       ],
       matchStrings: [
-        "TAPLO_VERSION: '(?<currentValue>[^'\\s]+)'",
+        "uses: tombi-toml/setup-tombi@[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+version: '(?<currentValue>[^'\\s]+)'",
       ],
       datasourceTemplate: 'github-releases',
-      depNameTemplate: 'tamasfe/taplo',
+      depNameTemplate: 'tombi-toml/tombi',
     },
     {
       customType: 'regex',

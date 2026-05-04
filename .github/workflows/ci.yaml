@@ -52,7 +52,7 @@ jobs:
               - '**/*.json5'
             toml:
               - '**/*.toml'
-              - .taplo.toml
+              - .tombi.toml
             yaml:
               - '**/*.yml'
               - '**/*.yaml'
@@ -221,21 +221,16 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install Taplo
-        env:
-          TAPLO_VERSION: '0.10.0'
-        run: |
-          mkdir -p "$HOME/.local/bin"
-          curl -fsSL "https://github.com/tamasfe/taplo/releases/download/${TAPLO_VERSION}/taplo-linux-x86_64.gz" \
-            | gzip -d > "$HOME/.local/bin/taplo"
-          chmod +x "$HOME/.local/bin/taplo"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Install Tombi
+        uses: tombi-toml/setup-tombi@9880d1d3ba5e745d410c697366c513b337704388 # v1.0.11
+        with:
+          version: '0.10.2'
 
       - name: Check TOML format
-        run: taplo fmt --check
+        run: tombi format --check
 
       - name: Lint TOML
-        run: taplo lint
+        run: tombi lint
 
   lint-yaml:
     name: Lint YAML
