@@ -13,11 +13,11 @@ repos:
     hooks:
       - id: markdownlint-cli2
 
-  - repo: https://github.com/ComPWA/taplo-pre-commit
-    rev: ade0f95ddcf661c697d4670d2cfcbe95d0048a0a  # frozen: v0.9.3
+  - repo: https://github.com/tombi-toml/tombi-pre-commit
+    rev: 15308df15bc5808d8bbc368acac5ab8b64c5a7b5  # frozen: v0.10.2
     hooks:
-      - id: taplo-format
-      - id: taplo-lint
+      - id: tombi-format
+      - id: tombi-lint
 
   - repo: https://github.com/adrienverge/yamllint
     rev: cba56bcde1fdd01c1deb3f945e69764c291a6530  # frozen: v1.38.0
