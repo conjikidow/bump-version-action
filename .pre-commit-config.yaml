@@ -64,7 +64,7 @@ repos:
       - id: no-commit-to-branch
 
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: b5d5040f7980a5d2bce320d2a1ea1e04ac54b00c  # frozen: v4.13.10
+    rev: 94d76a4e5012fe67050f5947824ae6c3aedcdfa8  # frozen: v4.14.0
     hooks:
       - id: commitizen
       - id: commitizen-branch
