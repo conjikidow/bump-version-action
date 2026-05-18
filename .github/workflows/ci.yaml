@@ -345,7 +345,7 @@ jobs:
       - name: Check prek
         uses: j178/prek-action@6ad80277337ad479fe43bd70701c3f7f8aa74db3 # v2.0.3
         with:
-          prek-version: 'v0.3.13'
+          prek-version: 'v0.4.0'
           extra-args: '--all-files --skip no-commit-to-branch'
 
   check-typos:
