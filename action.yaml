@@ -35,6 +35,10 @@ inputs:
     description: 'Comma-separated string of labels to add to the PR for version bumping.'
     required: false
     default: ''
+  update-major-minor-tags:
+    description: 'Whether to create or update the major (`vX`) and minor (`vX.Y`) tags to point to the new release.'
+    required: false
+    default: 'false'
   create-release:
     description: 'Whether to create a GitHub Release for the new tag.'
     required: false
@@ -125,6 +129,7 @@ runs:
         HEAD_REF: ${{ github.event.pull_request.head.ref }}
         MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
+        UPDATE_MAJOR_MINOR_TAGS: ${{ inputs.update-major-minor-tags }}
       run: ${{ github.action_path }}/src/create-tag.sh
 
     - name: Create GitHub Release
