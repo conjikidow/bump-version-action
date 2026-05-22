@@ -146,6 +146,7 @@ jobs:
 | `manual-bump-type`           | The bump type to use for manual workflow runs.    | No       | `''`                  |
 | `branch-prefix`              | The prefix for the version bump branch name.      | No       | `'workflow'`          |
 | `labels-to-add`              | Comma-separated labels to add to the bump PR.     | No       | `''`                  |
+| `update-major-minor-tags`    | Update the major (`vX`) and minor (`vX.Y`) tags.  | No       | `'false'`             |
 | `create-release`             | Create a GitHub Release for the new tag.          | No       | `'false'`             |
 
 <!-- markdownlint-disable MD028 -->
@@ -245,8 +246,20 @@ Follow these steps to configure the permissions:
 
 ### Tag Management
 
-In addition to the full version tag (`vX.Y.Z`), this action updates existing
-major (`vX`) and minor (`vX.Y`) tags based on the following rules:
+By default, this action only creates the full version tag (`vX.Y.Z`), which is never overwritten on subsequent releases.
+This default is compatible with GitHub's [Immutable Releases](https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases)
+setting and aligns with the recommendation to pin actions to specific versions
+(ideally to a commit SHA) for supply chain security.
+
+> [!NOTE]
+> True immutability of tags and releases requires enabling **Enable release immutability**
+> in your repository's **Settings → General → Releases**.
+> This action's default behavior is designed to be compatible with that setting.
+
+#### Enabling Major and Minor Tag Updates
+
+If `update-major-minor-tags` is set to `'true'`, the action also creates or updates
+the major (`vX`) and minor (`vX.Y`) tags based on the following rules:
 
 - If `vX.Y` exists → update to `vX.Y.Z`.
 - If `vX.Y` does not exist but a previous minor tag (`vX.Y` before the update) exists → create `vX.Y` and set it to `vX.Y.Z`.
@@ -254,11 +267,16 @@ major (`vX`) and minor (`vX.Y`) tags based on the following rules:
 - If `vX` does not exist but a previous major tag (`vX` before the update) exists → create `vX` and set it to `vX.Y.Z`.
 - If neither `vX` nor `vX.Y` exist, they are not created.
 
-#### Examples
+Examples:
 
 - `v1.2.3 → v1.2.4`: Update `v1.2` and `v1` if they exist.
 - `v1.2.3 → v1.3.0`: Create `v1.3` if `v1.2` exists, update `v1` if it exists.
 - `v1.2.3 → v2.0.0`: Create `v2.0` if `v1.2` exists, create `v2` if `v1` exists.
+
+> [!WARNING]
+> Updating major and minor tags requires force-pushing them,
+> which is incompatible with the **Enable release immutability** repository setting.
+> Enabling this option is discouraged for projects that prioritize supply chain security.
 
 ## Contributing & Feedback
 
