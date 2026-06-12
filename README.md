@@ -203,18 +203,15 @@ For more details, refer to the official [bump-my-version documentation](https://
 
 ### GitHub Actions Permissions Setup
 
-To enable GitHub Actions to run properly in your repository, you need to adjust the default permissions granted to the `GITHUB_TOKEN`.
-
-Follow these steps to configure the permissions:
+By default, this action creates pull requests using `GITHUB_TOKEN`, so the repository where it runs must allow that:
 
 1. Go to the **Settings** tab of your repository.
 2. On the left-hand menu, select **Actions/General**.
-3. Under the **Workflow permissions** section, ensure the following options are selected:
-   - **`Read and write permissions`**: This grants read and write access to the repository for all scopes.
-   - **`Allow GitHub Actions to create and approve PRs`**: This allows GitHub Actions to create PRs.
+3. Under the **Workflow permissions** section, enable **`Allow GitHub Actions to create and approve pull requests`**.
 4. Save the changes.
 
-![image](https://github.com/user-attachments/assets/da55e896-e087-486e-aadc-7fc1283dc652)
+This setting is not required when a different token (e.g. a GitHub App token) is passed via the `github-token` input.
+In that case, the token must have write access to the repository's contents and pull requests instead.
 
 ## How It Works
 
