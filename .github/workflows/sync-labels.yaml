@@ -1,6 +1,7 @@
 name: Sync Labels
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -12,7 +13,6 @@ on:
     paths:
       - '.github/workflows/sync-labels.yaml'
       - '.github/labels/label-definition.yaml'
-  workflow_dispatch:
 
 jobs:
 
