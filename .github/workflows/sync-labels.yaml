@@ -8,7 +8,7 @@ on:
       - '.github/workflows/sync-labels.yaml'
       - '.github/labels/label-definition.yaml'
   pull_request:
-    types: [opened, synchronize, reopened, labeled]
+    types: [opened, synchronize, reopened]
     paths:
       - '.github/workflows/sync-labels.yaml'
       - '.github/labels/label-definition.yaml'
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
+      issues: write
 
     steps:
       - name: Checkout the main repository
@@ -35,4 +35,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           yaml-file: .github/labels/label-definition.yaml
           skip-delete: false
-          dry-run: false
+          dry-run: ${{ github.event_name == 'pull_request' }}
