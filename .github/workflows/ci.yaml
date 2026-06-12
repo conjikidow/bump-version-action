@@ -207,7 +207,11 @@ jobs:
             echo 'No JSON5 files found.'
             exit 0
           fi
-          npx --yes json5@2.2.3 "${json5_files[@]}" >/dev/null
+          exit_code=0
+          for json5_file in "${json5_files[@]}"; do
+            npx --yes json5@2.2.3 --validate "$json5_file" || exit_code=1
+          done
+          exit $exit_code
 
   lint-toml:
     name: Lint TOML
