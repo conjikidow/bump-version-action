@@ -285,6 +285,9 @@ jobs:
           tool_name: tombi-format
           cleanup: 'false'
 
+      - name: Check TOML format
+        run: git diff --exit-code
+
   lint-yaml:
     name: Lint YAML
     needs: determine-changes
