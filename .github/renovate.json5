@@ -10,10 +10,11 @@
       managerFilePatterns: [
         '/^\\.github/workflows/.*\\.ya?ml$/',
       ],
+      matchStringsStrategy: 'recursive',
       matchStrings: [
-        "uses: commitizen-tools/setup-cz@(?<prefix>[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+version: ')(?<currentValue>[^'\\s]+)'",
+        "uses: commitizen-tools/setup-cz@[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+version: '[^'\\s]+'",
+        "\\n\\s+version: '(?<currentValue>[^'\\s]+)'",
       ],
-      autoReplaceStringTemplate: "uses: commitizen-tools/setup-cz@{{{prefix}}}{{{newValue}}}'",
       datasourceTemplate: 'pypi',
       depNameTemplate: 'commitizen',
     },
@@ -57,10 +58,11 @@
       managerFilePatterns: [
         '/^\\.github/workflows/ci\\.ya?ml$/',
       ],
+      matchStringsStrategy: 'recursive',
       matchStrings: [
-        "uses: reviewdog/action-setup@(?<prefix>[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+reviewdog_version: ')(?<currentValue>[^'\\s]+)'",
+        "uses: reviewdog/action-setup@[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+reviewdog_version: '[^'\\s]+'",
+        "\\n\\s+reviewdog_version: '(?<currentValue>[^'\\s]+)'",
       ],
-      autoReplaceStringTemplate: "uses: reviewdog/action-setup@{{{prefix}}}{{{newValue}}}'",
       datasourceTemplate: 'github-releases',
       depNameTemplate: 'reviewdog/reviewdog',
     },
@@ -80,10 +82,11 @@
       managerFilePatterns: [
         '/^\\.github/workflows/ci\\.ya?ml$/',
       ],
+      matchStringsStrategy: 'recursive',
       matchStrings: [
-        "uses: tombi-toml/setup-tombi@(?<prefix>[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+version: ')(?<currentValue>[^'\\s]+)'",
+        "uses: tombi-toml/setup-tombi@[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+version: '[^'\\s]+'",
+        "\\n\\s+version: '(?<currentValue>[^'\\s]+)'",
       ],
-      autoReplaceStringTemplate: "uses: tombi-toml/setup-tombi@{{{prefix}}}{{{newValue}}}'",
       datasourceTemplate: 'github-releases',
       depNameTemplate: 'tombi-toml/tombi',
     },
@@ -103,10 +106,11 @@
       managerFilePatterns: [
         '/^\\.github/workflows/ci\\.ya?ml$/',
       ],
+      matchStringsStrategy: 'recursive',
       matchStrings: [
-        "uses: j178/prek-action@(?<prefix>[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+prek-version: ')(?<currentValue>[^'\\s]+)'",
+        "uses: j178/prek-action@[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+prek-version: '[^'\\s]+'",
+        "\\n\\s+prek-version: '(?<currentValue>[^'\\s]+)'",
       ],
-      autoReplaceStringTemplate: "uses: j178/prek-action@{{{prefix}}}{{{newValue}}}'",
       datasourceTemplate: 'github-releases',
       depNameTemplate: 'j178/prek',
     },
