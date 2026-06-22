@@ -131,6 +131,38 @@
       allowedVersions: '/^v?\\d+\\.\\d+\\.\\d+$/',
     },
     {
+      matchDepNames: [
+        'commitizen-tools/commitizen',
+      ],
+      groupName: 'commitizen',
+    },
+    {
+      matchDepNames: [
+        'DavidAnson/markdownlint-cli2',
+      ],
+      groupName: 'markdownlint-cli2',
+    },
+    {
+      matchDepNames: [
+        'tombi-toml/setup-tombi',
+        'tombi-toml/tombi',
+        'tombi-toml/tombi-pre-commit',
+      ],
+      groupName: 'tombi',
+    },
+    {
+      matchDepNames: [
+        'crate-ci/typos',
+      ],
+      groupName: 'typos',
+    },
+    {
+      matchDepNames: [
+        'adrienverge/yamllint',
+      ],
+      groupName: 'yamllint',
+    },
+    {
       matchFileNames: [
         '.github/workflows/**',
       ],
