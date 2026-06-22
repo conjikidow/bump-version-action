@@ -16,7 +16,8 @@
         "\\n\\s+version: '(?<currentValue>[^'\\s]+)'",
       ],
       datasourceTemplate: 'pypi',
-      depNameTemplate: 'commitizen',
+      depNameTemplate: 'commitizen-tools/commitizen',
+      packageNameTemplate: 'commitizen',
     },
     {
       customType: 'regex',
@@ -40,7 +41,8 @@
         'renovate@(?<currentValue>\\S+)',
       ],
       datasourceTemplate: 'npm',
-      depNameTemplate: 'renovate',
+      depNameTemplate: 'renovatebot/renovate',
+      packageNameTemplate: 'renovate',
     },
     {
       customType: 'regex',
@@ -51,7 +53,8 @@
         'markdownlint-cli2@(?<currentValue>\\S+)',
       ],
       datasourceTemplate: 'npm',
-      depNameTemplate: 'markdownlint-cli2',
+      depNameTemplate: 'DavidAnson/markdownlint-cli2',
+      packageNameTemplate: 'markdownlint-cli2',
     },
     {
       customType: 'regex',
@@ -75,7 +78,8 @@
         'json5@(?<currentValue>\\S+)',
       ],
       datasourceTemplate: 'npm',
-      depNameTemplate: 'json5',
+      depNameTemplate: 'json5/json5',
+      packageNameTemplate: 'json5',
     },
     {
       customType: 'regex',
@@ -99,7 +103,8 @@
         'yamllint==(?<currentValue>[^"\\s]+)',
       ],
       datasourceTemplate: 'pypi',
-      depNameTemplate: 'yamllint',
+      depNameTemplate: 'adrienverge/yamllint',
+      packageNameTemplate: 'yamllint',
     },
     {
       customType: 'regex',
@@ -152,7 +157,7 @@
     },
     {
       matchDepNames: [
-        'renovate',
+        'renovatebot/renovate',
       ],
       matchFileNames: [
         '.github/workflows/ci.yaml',
@@ -164,7 +169,7 @@
     },
     {
       matchDepNames: [
-        'renovate',
+        'renovatebot/renovate',
       ],
       matchFileNames: [
         '.github/workflows/ci.yaml',
