@@ -26,6 +26,7 @@ Make sure your workflow includes the following:
 
 - The `on: pull_request: types: [closed]` trigger to run the workflow whenever a PR is closed.
 - The `permissions:` section to allow the workflow to update repository contents and PRs.
+- The job-level `if` condition to skip PRs that are closed without being merged.
 
 #### Basic Example
 
@@ -36,8 +37,11 @@ on:
   pull_request:
     types: [closed]
 
+permissions: {}
+
 jobs:
   bump-version:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -75,8 +79,11 @@ on:
           - minor
           - patch
 
+permissions: {}
+
 jobs:
   bump-version:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -88,7 +95,7 @@ jobs:
           label-major: 'major update'
           label-minor: 'minor update'
           label-patch: 'patch update'
-          manual-bump-type: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.bump_type || '' }}
+          manual-bump-type: ${{ inputs.bump_type }}
           labels-to-add: 'automated,version-bump'
           create-release: 'true'
 ```
@@ -106,8 +113,11 @@ on:
   pull_request:
     types: [closed]
 
+permissions: {}
+
 jobs:
   bump-version:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: write
