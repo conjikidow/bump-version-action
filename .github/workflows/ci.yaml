@@ -439,10 +439,6 @@ jobs:
       - name: Check spelling
         if: github.event_name != 'pull_request'
         uses: crate-ci/typos@37bb98842b0d8c4ffebdb75301a13db0267cef89 # v1.47.2
-        with:
-          files: |
-            .
-            .github/**
 
       - name: Check spelling (reviewdog)
         if: github.event_name == 'pull_request'
@@ -451,7 +447,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
           fail_level: error
-          typos_flags: --hidden .
+          typos_flags: .
 
   lint-commit-messages:
     name: Lint commit messages
