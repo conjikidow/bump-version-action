@@ -29,6 +29,6 @@ jobs:
           label-major: 'update::major'
           label-minor: 'update::minor'
           label-patch: 'update::patch'
-          manual-bump-type: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.bump_type || '' }}
+          manual-bump-type: ${{ inputs.bump_type }}
           labels-to-add: 'automated,versioning'
           create-release: 'true'
