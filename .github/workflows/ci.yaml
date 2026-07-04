@@ -472,7 +472,15 @@ jobs:
 
       - name: Lint commit messages on push
         if: github.event_name == 'push'
-        run: cz check --rev-range ${{ github.event.before }}..${{ github.sha }}
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          if ! git cat-file -e "${BEFORE_SHA}^{commit}" 2>/dev/null; then
+            echo "::notice title=cz check::Base commit unavailable (new branch or force push); skipping lint."
+            exit 0
+          fi
+          cz check --rev-range "${BEFORE_SHA}..${HEAD_SHA}"
 
       - name: Lint commit messages on pull request
         if: github.event_name == 'pull_request'
