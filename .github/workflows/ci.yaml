@@ -41,6 +41,8 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
         with:
+          safe_output: false
+          separator: "\n"
           files_yaml: |
             github_actions:
               - .github/workflows/**
@@ -214,7 +216,7 @@ jobs:
           CHANGED_JSON5_FILES: ${{ needs.determine-changes.outputs.json5_files }}
         run: |
           readarray -t json5_files < <(
-            printf '%s\n' "${CHANGED_JSON5_FILES}" | tr ' ' '\n' | sed '/^$/d'
+            printf '%s\n' "${CHANGED_JSON5_FILES}" | sed '/^$/d'
           )
           if [ ${#json5_files[@]} -eq 0 ]; then
             readarray -d '' -t json5_files < <(
