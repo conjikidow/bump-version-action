@@ -159,17 +159,9 @@ jobs:
 | `update-major-minor-tags`    | Update the major (`vX`) and minor (`vX.Y`) tags.  | No       | `'false'`             |
 | `create-release`             | Create a GitHub Release for the new tag.          | No       | `'false'`             |
 
-<!-- markdownlint-disable MD028 -->
-> [!TIP]
-> Set any of `label-major`, `label-minor`, or `label-patch` to an empty string (`''`) if you want to disable that bump type.
-
-> [!NOTE]
-> Set `manual-bump-type` to one of `major`, `minor`, or `patch` when the workflow is triggered manually.
-
-> [!WARNING]
-> Any labels specified in `labels-to-add` must already exist in your repository.
-> If they do not, create them in advance to avoid errors.
-<!-- markdownlint-enable MD028 -->
+- Set any of `label-major`, `label-minor`, or `label-patch` to an empty string (`''`) to disable that bump type.
+- Set `manual-bump-type` to one of `major`, `minor`, or `patch` when the workflow is triggered manually.
+- Any labels specified in `labels-to-add` must already exist in your repository; the action fails if they do not.
 
 ### Outputs
 
@@ -258,10 +250,9 @@ This default is compatible with GitHub's [Immutable Releases](https://docs.githu
 setting and aligns with the recommendation to pin actions to specific versions
 (ideally to a commit SHA) for supply chain security.
 
-> [!NOTE]
-> True immutability of tags and releases requires enabling **Enable release immutability**
-> in your repository's **Settings → General → Releases**.
-> This action's default behavior is designed to be compatible with that setting.
+True immutability of tags and releases requires enabling **Enable release immutability**
+in your repository's **Settings → General → Releases**.
+This action's default behavior is designed to be compatible with that setting.
 
 #### Enabling Major and Minor Tag Updates
 
@@ -280,7 +271,7 @@ Examples:
 - `v1.2.3 → v1.3.0`: Create `v1.3` if `v1.2` exists, update `v1` if it exists.
 - `v1.2.3 → v2.0.0`: Create `v2.0` if `v1.2` exists, create `v2` if `v1` exists.
 
-> [!WARNING]
+> [!CAUTION]
 > Updating major and minor tags requires force-pushing them,
 > which is incompatible with the **Enable release immutability** repository setting.
 > Enabling this option is discouraged for projects that prioritize supply chain security.
