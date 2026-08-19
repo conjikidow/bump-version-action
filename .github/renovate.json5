@@ -49,12 +49,14 @@
       managerFilePatterns: [
         '/^\\.github/workflows/ci\\.ya?ml$/',
       ],
+      matchStringsStrategy: 'recursive',
       matchStrings: [
-        'markdownlint-cli2@(?<currentValue>\\S+)',
+        "uses: rvben/rumdl@[a-f0-9]{40}[^\\n]*\\n(?:\\s+with:\\n(?:\\s+[^\\n]+\\n)*?)\\s+version: '[^'\\s]+'",
+        "\\n\\s+version: '(?<currentValue>[^'\\s]+)'",
       ],
-      datasourceTemplate: 'npm',
-      depNameTemplate: 'DavidAnson/markdownlint-cli2',
-      packageNameTemplate: 'markdownlint-cli2',
+      datasourceTemplate: 'pypi',
+      depNameTemplate: 'rvben/rumdl',
+      packageNameTemplate: 'rumdl',
     },
     {
       customType: 'regex',
@@ -138,9 +140,10 @@
     },
     {
       matchDepNames: [
-        'DavidAnson/markdownlint-cli2',
+        'rvben/rumdl',
+        'rvben/rumdl-pre-commit',
       ],
-      groupName: 'markdownlint-cli2',
+      groupName: 'rumdl',
     },
     {
       matchDepNames: [

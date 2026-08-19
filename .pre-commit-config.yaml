@@ -8,10 +8,10 @@ repos:
       - id: typos
         args: ["--force-exclude"]
 
-  - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: b82a6c8896e491b9cb377a99ff3412131920681b  # frozen: v0.23.2
+  - repo: https://github.com/rvben/rumdl-pre-commit
+    rev: 4f7fb84c204d04a8b458ad18ca6cd63417d524a9  # frozen: v0.2.55
     hooks:
-      - id: markdownlint-cli2
+      - id: rumdl
 
   - repo: https://github.com/tombi-toml/tombi-pre-commit
     rev: 7fd33d1d0a5b52dcc5aaae94c68cc90a9926271e  # frozen: v1.2.10

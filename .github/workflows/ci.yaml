@@ -54,7 +54,7 @@ jobs:
               - .github/renovate.json5
             md:
               - '**/*.md'
-              - .markdownlint-cli2.yaml
+              - .rumdl.toml
             json5:
               - '**/*.json5'
             toml:
@@ -162,7 +162,6 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: read
-      pull-requests: write
 
     steps:
       - name: Checkout the main repository
@@ -171,35 +170,10 @@ jobs:
           persist-credentials: false
 
       - name: Lint Markdown
-        if: github.event_name != 'pull_request'
-        run: npx --yes markdownlint-cli2@0.23.2 .
-
-      - name: Set up reviewdog
-        if: github.event_name == 'pull_request'
-        uses: reviewdog/action-setup@d8a7baabd7f3e8544ee4dbde3ee41d0011c3a93f # v1.5.0
+        uses: rvben/rumdl@4997ff07b63c7a54d6a495ebcd3ce7f23ee1173f # v0.2.55
         with:
-          reviewdog_version: 'v0.21.0'
-
-      - name: Lint Markdown (reviewdog)
-        if: github.event_name == 'pull_request'
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          markdownlint_rc=0
-          npx --yes markdownlint-cli2@0.23.2 . > /tmp/markdownlint-report.txt 2>&1 || markdownlint_rc=$?
-          reviewdog_rc=0
-          reviewdog < /tmp/markdownlint-report.txt \
-              -efm="%f:%l:%c %m" \
-              -efm="%f:%l %m" \
-              -name=markdownlint \
-              -reporter=github-pr-review \
-              -filter-mode=nofilter \
-              -fail-level=error || reviewdog_rc=$?
-          if [ $markdownlint_rc -ne 0 ] && ! grep -Eq '^[^:]+:[0-9]+(:[0-9]+)? ' /tmp/markdownlint-report.txt; then
-            echo "::error title=markdownlint::markdownlint failed before producing parseable diagnostics"
-            exit $markdownlint_rc
-          fi
-          exit $reviewdog_rc
+          version: '0.2.55'
+          report-type: annotations
 
   lint-json5:
     name: Lint JSON5
