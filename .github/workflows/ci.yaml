@@ -169,9 +169,9 @@ jobs:
           persist-credentials: false
 
       - name: Lint Markdown
-        uses: rvben/rumdl@023027472dbcb502aeb89760f4122e2235d36490 # v0.2.58
+        uses: rvben/rumdl@50dbfef7cf08f1d28633b684c0884490a63094e3 # v0.2.60
         with:
-          version: '0.2.58'
+          version: '0.2.60'
           report-type: annotations
 
   lint-json5:
