@@ -190,6 +190,7 @@
     {
       matchFileNames: [
         '.github/workflows/**',
+        'action.yaml',
       ],
       matchUpdateTypes: [
         'patch',
