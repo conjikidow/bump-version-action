@@ -169,7 +169,10 @@
       matchDepNames: [
         'ghcr.io/zizmorcore/zizmor',
       ],
+      overrideDatasource: 'github-releases',
+      overridePackageName: 'zizmorcore/zizmor',
       minimumReleaseAge: '4 days',
+      pinDigests: false,
     },
     {
       matchFileNames: [
