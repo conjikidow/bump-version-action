@@ -9,7 +9,7 @@ repos:
         args: ["--force-exclude"]
 
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: ef4cbdf14d75874eb296d1fe6ea6450a237b825e  # frozen: v0.2.66
+    rev: 9ebb29f982d88ed2cb80409361f06ad8260041f1  # frozen: v0.2.67
     hooks:
       - id: rumdl
         args: ["--fix"]
