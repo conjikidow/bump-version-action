@@ -96,6 +96,7 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
+        GH_REPO: ${{ github.repository }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
         LABEL_MAJOR: ${{ inputs.label-major }}
         LABEL_MINOR: ${{ inputs.label-minor }}
@@ -112,6 +113,7 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
+        GH_REPO: ${{ github.repository }}
         VERSION_OF_BUMP_MY_VERSION: ${{ inputs.version-of-bump-my-version }}
         LABELS_TO_ADD: ${{ inputs.labels-to-add }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
@@ -123,7 +125,6 @@ runs:
       id: create-tag
       shell: bash
       env:
-        GH_TOKEN: ${{ inputs.github-token }}
         PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
         PR_MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
@@ -140,6 +141,7 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
+        GH_REPO: ${{ github.repository }}
         PR_MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         NEW_VERSION: ${{ steps.create-tag.outputs.new-version }}
       run: ${{ github.action_path }}/src/create-release.sh
