@@ -31,7 +31,6 @@ You can save them in a file such as `.github/workflows/bump-version.yaml`.
 Make sure your workflow includes the following:
 
 - The `on: pull_request: types: [closed]` trigger to run the workflow whenever a PR is closed.
-- The `permissions:` section to allow the workflow to update repository contents and PRs.
 - The job-level `if` condition to skip PRs that are closed without being merged.
 
 #### Basic Example
@@ -42,8 +41,6 @@ name: Bump Version
 on:
   pull_request:
     types: [closed]
-
-permissions: {}
 
 jobs:
   bump-version:
@@ -90,8 +87,6 @@ on:
           - minor
           - patch
 
-permissions: {}
-
 jobs:
   bump-version:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
@@ -123,8 +118,6 @@ name: Bump Version with External Release
 on:
   pull_request:
     types: [closed]
-
-permissions: {}
 
 jobs:
   bump-version:
