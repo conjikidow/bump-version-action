@@ -1,5 +1,11 @@
 # Bump Version Action
 
+[![Marketplace](https://img.shields.io/badge/Marketplace-Bump_Version_Action-2088FF.svg?style=flat&logo=githubactions&logoColor=white)](https://github.com/marketplace/actions/bump-version-action)
+[![Release](https://img.shields.io/github/v/release/conjikidow/bump-version-action?style=flat&logo=github&logoColor=white&label=release)](https://github.com/conjikidow/bump-version-action/releases/latest)
+[![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg?style=flat)](#license)
+[![prek](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/j178/prek/master/docs/assets/badge-v0.json)](https://github.com/j178/prek)
+[![CI](https://github.com/conjikidow/bump-version-action/actions/workflows/ci.yaml/badge.svg)](https://github.com/conjikidow/bump-version-action/actions/workflows/ci.yaml)
+
 A GitHub Action to bump versions based on pull request (PR) labels.
 
 This action follows the principles of [semantic versioning](https://semver.org),
