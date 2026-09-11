@@ -152,18 +152,18 @@ jobs:
 
 ### Inputs
 
-| Name                         | Description                                       | Required | Default               |
-|------------------------------|---------------------------------------------------|----------|-----------------------|
-| `github-token`               | The GitHub token for authentication.              | No       | `${{ github.token }}` |
-| `version-of-bump-my-version` | The version of `bump-my-version` to use.          | No       | `'latest'`            |
-| `label-major`                | The label used to trigger a major version bump.   | No       | `'major'`             |
-| `label-minor`                | The label used to trigger a minor version bump.   | No       | `'minor'`             |
-| `label-patch`                | The label used to trigger a patch version bump.   | No       | `'patch'`             |
-| `manual-bump-type`           | The bump type to use for manual workflow runs.    | No       | `''`                  |
-| `branch-prefix`              | The prefix for the version bump branch name.      | No       | `'workflow'`          |
-| `labels-to-add`              | Comma-separated labels to add to the bump PR.     | No       | `''`                  |
-| `update-major-minor-tags`    | Update the major (`vX`) and minor (`vX.Y`) tags.  | No       | `'false'`             |
-| `create-release`             | Create a GitHub Release for the new tag.          | No       | `'false'`             |
+| Name                         | Description                                      | Required | Default               |
+| ---------------------------- | ------------------------------------------------ | -------- | --------------------- |
+| `github-token`               | The GitHub token for authentication.             | No       | `${{ github.token }}` |
+| `version-of-bump-my-version` | The version of `bump-my-version` to use.         | No       | `'latest'`            |
+| `label-major`                | The label used to trigger a major version bump.  | No       | `'major'`             |
+| `label-minor`                | The label used to trigger a minor version bump.  | No       | `'minor'`             |
+| `label-patch`                | The label used to trigger a patch version bump.  | No       | `'patch'`             |
+| `manual-bump-type`           | The bump type to use for manual workflow runs.   | No       | `''`                  |
+| `branch-prefix`              | The prefix for the version bump branch name.     | No       | `'workflow'`          |
+| `labels-to-add`              | Comma-separated labels to add to the bump PR.    | No       | `''`                  |
+| `update-major-minor-tags`    | Update the major (`vX`) and minor (`vX.Y`) tags. | No       | `'false'`             |
+| `create-release`             | Create a GitHub Release for the new tag.         | No       | `'false'`             |
 
 - Set any of `label-major`, `label-minor`, or `label-patch` to an empty string (`''`) to disable that bump type.
 - Set `manual-bump-type` to one of `major`, `minor`, or `patch` when the workflow is triggered manually.
@@ -172,7 +172,7 @@ jobs:
 ### Outputs
 
 | Name             | Description                                                                             |
-|------------------|-----------------------------------------------------------------------------------------|
+| ---------------- | --------------------------------------------------------------------------------------- |
 | `version-bumped` | `true` if the version was bumped and a new tag was created; otherwise, `false`.         |
 | `new-version`    | The new version number (e.g., `1.2.4`). This is empty when `version-bumped` is `false`. |
 
