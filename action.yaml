@@ -95,9 +95,7 @@ runs:
       id: bump-type
       shell: bash
       env:
-        EVENT_NAME: ${{ github.event_name }}
         GH_TOKEN: ${{ inputs.github-token }}
-        REPO: ${{ github.repository }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
         LABEL_MAJOR: ${{ inputs.label-major }}
         LABEL_MINOR: ${{ inputs.label-minor }}
@@ -115,9 +113,9 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.github-token }}
         VERSION_OF_BUMP_MY_VERSION: ${{ inputs.version-of-bump-my-version }}
-        BUMP_TYPE: ${{ steps.bump-type.outputs.type }}
         LABELS_TO_ADD: ${{ inputs.labels-to-add }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
+        BUMP_TYPE: ${{ steps.bump-type.outputs.type }}
       run: ${{ github.action_path }}/src/bump-version.sh
 
     - name: Create tag
@@ -126,8 +124,8 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
-        HEAD_REF: ${{ github.event.pull_request.head.ref }}
-        MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        PR_MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
         UPDATE_MAJOR_MINOR_TAGS: ${{ inputs.update-major-minor-tags }}
       run: ${{ github.action_path }}/src/create-tag.sh
@@ -142,8 +140,8 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
+        PR_MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         NEW_VERSION: ${{ steps.create-tag.outputs.new-version }}
-        MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
       run: ${{ github.action_path }}/src/create-release.sh
 
     - name: Set outputs

@@ -22,7 +22,7 @@ if ! validate_manual_bump_type "${MANUAL_BUMP_TYPE:-}"; then
   exit 1
 fi
 
-if [[ ${EVENT_NAME} == "workflow_dispatch" ]]; then
+if [[ ${GITHUB_EVENT_NAME} == "workflow_dispatch" ]]; then
   if [[ -z ${MANUAL_BUMP_TYPE} ]]; then
     echo "Error: manual-bump-type is required for workflow_dispatch events." >&2
     exit 1
@@ -33,14 +33,14 @@ if [[ ${EVENT_NAME} == "workflow_dispatch" ]]; then
   exit 0
 fi
 
-if [[ ${EVENT_NAME} != "pull_request" ]]; then
-  echo "Unsupported event for bump type determination: ${EVENT_NAME}" >&2
+if [[ ${GITHUB_EVENT_NAME} != "pull_request" ]]; then
+  echo "Unsupported event for bump type determination: ${GITHUB_EVENT_NAME}" >&2
   exit 1
 fi
 
 # Fetch PR labels
 echo "Fetching PR labels..."
-labels=$(gh api --jq '.labels.[].name' "/repos/${REPO}/pulls/${PR_NUMBER}" | tr '\n' ',' | sed 's/,$//')
+labels=$(gh api --jq '.labels.[].name' "/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" | tr '\n' ',' | sed 's/,$//')
 echo "Found labels: ${labels}"
 
 # Return success if a non-empty label name is found inside $labels
