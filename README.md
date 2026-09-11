@@ -176,7 +176,6 @@ A GitHub App installation token needs the same access granted to the app itself.
 
 | Name                         | Description                                                                     | Required | Default               |
 | ---------------------------- | ------------------------------------------------------------------------------- | -------- | --------------------- |
-| `github-token`               | Token used to authenticate with GitHub.                                         | No       | `${{ github.token }}` |
 | `version-of-bump-my-version` | Version of `bump-my-version` to use.                                            | No       | `'latest'`            |
 | `label-major`                | Label that triggers a major version bump.                                       | No       | `'major'`             |
 | `label-minor`                | Label that triggers a minor version bump.                                       | No       | `'minor'`             |
@@ -186,6 +185,7 @@ A GitHub App installation token needs the same access granted to the app itself.
 | `labels-to-add`              | Labels to add to the version bump pull request, separated by commas.            | No       | `''`                  |
 | `update-major-minor-tags`    | Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.           | No       | `'false'`             |
 | `create-release`             | Whether to create a GitHub Release for the new tag.                             | No       | `'false'`             |
+| `github-token`               | Token used to authenticate with GitHub.                                         | No       | `${{ github.token }}` |
 
 - Set any of `label-major`, `label-minor`, or `label-patch` to an empty string (`''`) to disable that bump type.
 - `manual-bump-type` is required for `workflow_dispatch` runs; the action fails when it is empty.

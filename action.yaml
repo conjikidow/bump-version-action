@@ -3,10 +3,6 @@ description: 'Bump versions based on PR labels'
 author: 'conjikidow'
 
 inputs:
-  github-token:
-    description: 'Token used to authenticate with GitHub. Needs `contents: write` and `pull-requests: write`.'
-    required: false
-    default: ${{ github.token }}
   version-of-bump-my-version:
     description: 'Version of `bump-my-version` to use.'
     required: false
@@ -43,6 +39,10 @@ inputs:
     description: 'Whether to create a GitHub Release for the new tag.'
     required: false
     default: 'false'
+  github-token:
+    description: 'Token used to authenticate with GitHub. Needs `contents: write` and `pull-requests: write`.'
+    required: false
+    default: ${{ github.token }}
 outputs:
   version-bumped:
     description: "`true` when the version was bumped and a new tag was created; otherwise `false`."
