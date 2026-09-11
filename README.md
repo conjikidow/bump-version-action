@@ -63,6 +63,11 @@ jobs:
           create-release: 'true'
 ```
 
+The examples reference actions by tag for readability.
+For production workflows, consider pinning each action to a full-length commit SHA,
+as [GitHub recommends](https://docs.github.com/en/actions/reference/security/secure-use#using-third-party-actions).
+Releases of this action are immutable, so its full version tags (`vX.Y.Z`) are already locked to a single commit.
+
 #### Example with Manual Dispatch
 
 You can also use this action with manual workflow dispatch.
