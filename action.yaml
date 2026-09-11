@@ -1,5 +1,5 @@
 name: 'Bump Version Action'
-description: 'Automatically bumps version based on PR labels and creates a pull request and tag.'
+description: 'Bump versions based on PR labels'
 author: 'conjikidow'
 
 inputs:
