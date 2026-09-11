@@ -155,6 +155,23 @@ jobs:
           body_path: custom-release-notes.md
 ```
 
+### Permissions
+
+The token passed to `github-token` needs `contents: write` to push the version bump branch and the tag,
+and `pull-requests: write` to open the version bump pull request.
+
+The default `${{ github.token }}` carries whatever the workflow grants it,
+so grant those scopes in the job, as the examples above do.
+`GITHUB_TOKEN` also needs the repository itself to allow it to open pull requests:
+
+1. Go to the **Settings** tab of your repository.
+2. On the left-hand menu, select **Actions/General**.
+3. Under the **Workflow permissions** section, enable **`Allow GitHub Actions to create and approve pull requests`**.
+4. Save the changes.
+
+Neither the `permissions:` block nor that setting reaches a token you pass yourself.
+A GitHub App installation token needs the same access granted to the app itself.
+
 ### Inputs
 
 | Name                         | Description                                                                     | Required | Default               |
@@ -213,18 +230,6 @@ uvx bump-my-version sample-config --no-prompt --destination .bumpversion.toml
 ```
 
 For more details, refer to the official [bump-my-version documentation](https://callowayproject.github.io/bump-my-version/reference/configuration).
-
-### GitHub Actions Permissions Setup
-
-By default, this action creates pull requests using `GITHUB_TOKEN`, so the repository where it runs must allow that:
-
-1. Go to the **Settings** tab of your repository.
-2. On the left-hand menu, select **Actions/General**.
-3. Under the **Workflow permissions** section, enable **`Allow GitHub Actions to create and approve pull requests`**.
-4. Save the changes.
-
-This setting is not required when a different token (e.g. a GitHub App token) is passed via the `github-token` input.
-In that case, the token must have write access to the repository's contents and pull requests instead.
 
 ## How It Works
 
