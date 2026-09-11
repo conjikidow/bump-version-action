@@ -171,6 +171,7 @@ jobs:
 | `create-release`             | Whether to create a GitHub Release for the new tag.                             | No       | `'false'`             |
 
 - Set any of `label-major`, `label-minor`, or `label-patch` to an empty string (`''`) to disable that bump type.
+- `manual-bump-type` is required for `workflow_dispatch` runs; the action fails when it is empty.
 - Any labels specified in `labels-to-add` must already exist in your repository; the action fails if they do not.
 
 ### Outputs
