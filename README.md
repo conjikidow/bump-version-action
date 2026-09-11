@@ -155,31 +155,48 @@ jobs:
           body_path: custom-release-notes.md
 ```
 
+### Permissions
+
+The token passed to `github-token` needs `contents: write` to push the version bump branch and the tag,
+and `pull-requests: write` to open the version bump pull request.
+
+The default `${{ github.token }}` carries whatever the workflow grants it,
+so grant those scopes in the job, as the examples above do.
+`GITHUB_TOKEN` also needs the repository itself to allow it to open pull requests:
+
+1. Go to the **Settings** tab of your repository.
+2. On the left-hand menu, select **Actions/General**.
+3. Under the **Workflow permissions** section, enable **`Allow GitHub Actions to create and approve pull requests`**.
+4. Save the changes.
+
+Neither the `permissions:` block nor that setting reaches a token you pass yourself.
+A GitHub App installation token needs the same access granted to the app itself.
+
 ### Inputs
 
-| Name                         | Description                                      | Required | Default               |
-| ---------------------------- | ------------------------------------------------ | -------- | --------------------- |
-| `github-token`               | The GitHub token for authentication.             | No       | `${{ github.token }}` |
-| `version-of-bump-my-version` | The version of `bump-my-version` to use.         | No       | `'latest'`            |
-| `label-major`                | The label used to trigger a major version bump.  | No       | `'major'`             |
-| `label-minor`                | The label used to trigger a minor version bump.  | No       | `'minor'`             |
-| `label-patch`                | The label used to trigger a patch version bump.  | No       | `'patch'`             |
-| `manual-bump-type`           | The bump type to use for manual workflow runs.   | No       | `''`                  |
-| `branch-prefix`              | The prefix for the version bump branch name.     | No       | `'workflow'`          |
-| `labels-to-add`              | Comma-separated labels to add to the bump PR.    | No       | `''`                  |
-| `update-major-minor-tags`    | Update the major (`vX`) and minor (`vX.Y`) tags. | No       | `'false'`             |
-| `create-release`             | Create a GitHub Release for the new tag.         | No       | `'false'`             |
+| Name                         | Description                                                                     | Required | Default               |
+| ---------------------------- | ------------------------------------------------------------------------------- | -------- | --------------------- |
+| `github-token`               | Token used to authenticate with GitHub.                                         | No       | `${{ github.token }}` |
+| `version-of-bump-my-version` | Version of `bump-my-version` to use.                                            | No       | `'latest'`            |
+| `label-major`                | Label that triggers a major version bump.                                       | No       | `'major'`             |
+| `label-minor`                | Label that triggers a minor version bump.                                       | No       | `'minor'`             |
+| `label-patch`                | Label that triggers a patch version bump.                                       | No       | `'patch'`             |
+| `manual-bump-type`           | Bump type used for manual workflow dispatch runs: `major`, `minor`, or `patch`. | No       | `''`                  |
+| `branch-prefix`              | Prefix of the version bump branch name.                                         | No       | `'workflow'`          |
+| `labels-to-add`              | Labels to add to the version bump pull request, separated by commas.            | No       | `''`                  |
+| `update-major-minor-tags`    | Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.           | No       | `'false'`             |
+| `create-release`             | Whether to create a GitHub Release for the new tag.                             | No       | `'false'`             |
 
 - Set any of `label-major`, `label-minor`, or `label-patch` to an empty string (`''`) to disable that bump type.
-- Set `manual-bump-type` to one of `major`, `minor`, or `patch` when the workflow is triggered manually.
+- `manual-bump-type` is required for `workflow_dispatch` runs; the action fails when it is empty.
 - Any labels specified in `labels-to-add` must already exist in your repository; the action fails if they do not.
 
 ### Outputs
 
-| Name             | Description                                                                             |
-| ---------------- | --------------------------------------------------------------------------------------- |
-| `version-bumped` | `true` if the version was bumped and a new tag was created; otherwise, `false`.         |
-| `new-version`    | The new version number (e.g., `1.2.4`). This is empty when `version-bumped` is `false`. |
+| Name             | Description                                                                      |
+| ---------------- | -------------------------------------------------------------------------------- |
+| `version-bumped` | `true` when the version was bumped and a new tag was created; otherwise `false`. |
+| `new-version`    | New version number (e.g. `1.2.4`). Empty when `version-bumped` is `false`.       |
 
 ### bump-my-version Configuration
 
@@ -213,18 +230,6 @@ uvx bump-my-version sample-config --no-prompt --destination .bumpversion.toml
 ```
 
 For more details, refer to the official [bump-my-version documentation](https://callowayproject.github.io/bump-my-version/reference/configuration).
-
-### GitHub Actions Permissions Setup
-
-By default, this action creates pull requests using `GITHUB_TOKEN`, so the repository where it runs must allow that:
-
-1. Go to the **Settings** tab of your repository.
-2. On the left-hand menu, select **Actions/General**.
-3. Under the **Workflow permissions** section, enable **`Allow GitHub Actions to create and approve pull requests`**.
-4. Save the changes.
-
-This setting is not required when a different token (e.g. a GitHub App token) is passed via the `github-token` input.
-In that case, the token must have write access to the repository's contents and pull requests instead.
 
 ## How It Works
 
