@@ -65,6 +65,47 @@ For production workflows, consider pinning each action to a full-length commit S
 as [GitHub recommends](https://docs.github.com/en/actions/reference/security/secure-use#using-third-party-actions).
 Releases of this action are immutable, so its full version tags (`vX.Y.Z`) are already locked to a single commit.
 
+> [!IMPORTANT]
+> Workflows do not run automatically on a pull request created with the default `${{ github.token }}`.
+> They wait for approval from a user with write access to the repository.
+> See [Example with a GitHub App Token](#example-with-a-github-app-token) to avoid that approval.
+
+#### Example with a GitHub App Token
+
+The following example generates a GitHub App installation token and passes it to `github-token`,
+so that the workflows triggered by the version bump pull request run without approval.
+
+```yaml
+name: Bump Version
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  bump-version:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          client-id: ${{ vars.GH_APP_CLIENT_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Bump Version
+        uses: conjikidow/bump-version-action@v4.0.2
+        with:
+          label-major: 'major update'
+          label-minor: 'minor update'
+          label-patch: 'patch update'
+          labels-to-add: 'automated,version-bump'
+          create-release: 'true'
+          github-token: ${{ steps.app-token.outputs.token }}
+```
+
 #### Example with Manual Dispatch
 
 You can also use this action with manual workflow dispatch.
@@ -154,7 +195,7 @@ The token passed to `github-token` needs `contents: write` to push the version b
 and `pull-requests: write` to open the version bump pull request.
 
 The default `${{ github.token }}` carries whatever the workflow grants it,
-so grant those scopes in the job, as the examples above do.
+so grant those scopes in the job, as the examples that keep it do.
 `GITHUB_TOKEN` also needs the repository itself to allow it to open pull requests:
 
 1. Go to the **Settings** tab of your repository.
@@ -163,7 +204,9 @@ so grant those scopes in the job, as the examples above do.
 4. Save the changes.
 
 Neither the `permissions:` block nor that setting reaches a token you pass yourself.
-A GitHub App installation token needs the same access granted to the app itself.
+A GitHub App installation token, as in the second example above, needs the same access granted to the app itself.
+None of the steps that act on your repository use the job's own `GITHUB_TOKEN`,
+which is why that example zeroes it with `permissions: {}`.
 
 ### Inputs
 
