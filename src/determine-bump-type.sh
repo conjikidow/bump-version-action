@@ -1,8 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+
 if ! command -v gh &>/dev/null; then
-  echo "Error: GitHub CLI (gh) is not installed. Please install it to continue." >&2
+  log_error "GitHub CLI (gh) is not installed. Please install it to continue."
   exit 1
 fi
 
@@ -18,13 +21,13 @@ validate_manual_bump_type() {
 }
 
 if ! validate_manual_bump_type "${MANUAL_BUMP_TYPE:-}"; then
-  echo "Error: manual-bump-type must be one of 'major', 'minor', 'patch', or empty." >&2
+  log_error "manual-bump-type must be one of 'major', 'minor', 'patch', or empty."
   exit 1
 fi
 
 if [[ ${GITHUB_EVENT_NAME} == "workflow_dispatch" ]]; then
   if [[ -z ${MANUAL_BUMP_TYPE} ]]; then
-    echo "Error: manual-bump-type is required for workflow_dispatch events." >&2
+    log_error "manual-bump-type is required for workflow_dispatch events."
     exit 1
   fi
 
@@ -34,7 +37,7 @@ if [[ ${GITHUB_EVENT_NAME} == "workflow_dispatch" ]]; then
 fi
 
 if [[ ${GITHUB_EVENT_NAME} != "pull_request" ]]; then
-  echo "Unsupported event for bump type determination: ${GITHUB_EVENT_NAME}" >&2
+  log_error "Unsupported event for bump type determination: ${GITHUB_EVENT_NAME}"
   exit 1
 fi
 

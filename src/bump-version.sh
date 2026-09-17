@@ -1,8 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+
 if ! command -v gh &>/dev/null; then
-  echo "Error: GitHub CLI (gh) is not installed. Please install it to continue." >&2
+  log_error "GitHub CLI (gh) is not installed. Please install it to continue."
   exit 1
 fi
 
@@ -51,14 +54,13 @@ if ! pr_url=$(gh pr create --title "chore(release): bump version from ${previous
   --label "$LABELS_TO_ADD" 2>"$pr_create_error_file"); then
   PR_OUTPUT=$(<"$pr_create_error_file")
   if echo "$PR_OUTPUT" | grep -q "GitHub Actions is not permitted to create or approve pull requests"; then
-    echo "Error: Failed to create pull request due to insufficient permissions." >&2
-    echo "Please ensure 'Allow GitHub Actions to create and approve pull requests' is enabled in your repository settings (Settings > Actions > General > Workflow permissions). Refer to the README for more details." >&2
+    log_error "Failed to create pull request due to insufficient permissions. Please ensure 'Allow GitHub Actions to create and approve pull requests' is enabled in your repository settings (Settings > Actions > General > Workflow permissions). Refer to the README for more details."
     exit 1
   elif [[ -n $pr_url ]]; then
-    echo "::warning::Pull request was created but adding labels to it failed: ${pr_url}"
+    log_warn "Pull request was created but adding labels to it failed: ${pr_url}"
     echo "$PR_OUTPUT" >&2
   else
-    echo "Error: Failed to create pull request." >&2
+    log_error "Failed to create pull request."
     echo "$PR_OUTPUT" >&2
     exit 1
   fi

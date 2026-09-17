@@ -1,11 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+
 branch_name="$PR_HEAD_REF"
 
 # Ensure branch_name is not empty
 if [ -z "$branch_name" ]; then
-  echo "branch_name is not set. Exiting."
+  log_error "branch_name is not set."
   exit 1
 fi
 
