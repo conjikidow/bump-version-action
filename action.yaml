@@ -108,7 +108,7 @@ runs:
         LABEL_MINOR: ${{ inputs.label-minor }}
         LABEL_PATCH: ${{ inputs.label-patch }}
         MANUAL_BUMP_TYPE: ${{ inputs.manual-bump-type }}
-      run: ${{ github.action_path }}/src/determine-bump-type.sh
+      run: bash "${{ github.action_path }}/src/determine-bump-type.sh"
 
     - name: Install uv
       if: env.SKIP_JOB != 'true' && steps.bump-type.outputs.type != 'none'
@@ -125,7 +125,7 @@ runs:
         LABELS_TO_ADD: ${{ inputs.labels-to-add }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
         BUMP_TYPE: ${{ steps.bump-type.outputs.type }}
-      run: ${{ github.action_path }}/src/bump-version.sh
+      run: bash "${{ github.action_path }}/src/bump-version.sh"
 
     - name: Create tag
       if: env.SKIP_JOB != 'true' && github.event_name == 'pull_request' && github.event.pull_request.merged == true
@@ -136,7 +136,7 @@ runs:
         PR_MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
         UPDATE_MAJOR_MINOR_TAGS: ${{ inputs.update-major-minor-tags }}
-      run: ${{ github.action_path }}/src/create-tag.sh
+      run: bash "${{ github.action_path }}/src/create-tag.sh"
 
     - name: Create GitHub Release
       if: >-
@@ -151,7 +151,7 @@ runs:
         GH_REPO: ${{ github.repository }}
         PR_MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         NEW_VERSION: ${{ steps.create-tag.outputs.new-version }}
-      run: ${{ github.action_path }}/src/create-release.sh
+      run: bash "${{ github.action_path }}/src/create-release.sh"
 
     - name: Set outputs
       if: env.SKIP_JOB != 'true'
