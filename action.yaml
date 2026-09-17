@@ -50,6 +50,12 @@ outputs:
   new-version:
     description: "New version number (e.g. `1.2.4`). Empty when `version-bumped` is `false`."
     value: ${{ steps.set-outputs.outputs.new-version }}
+  pull-request-number:
+    description: "Number of the version bump pull request. Empty when no pull request was created."
+    value: ${{ steps.set-outputs.outputs.pull-request-number }}
+  pull-request-url:
+    description: "URL of the version bump pull request. Empty when no pull request was created."
+    value: ${{ steps.set-outputs.outputs.pull-request-url }}
 
 runs:
   using: 'composite'
@@ -110,6 +116,7 @@ runs:
 
     - name: Run bump script
       if: env.SKIP_JOB != 'true' && steps.bump-type.outputs.type != 'none'
+      id: bump-version
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
@@ -153,9 +160,13 @@ runs:
       env:
         VERSION_BUMPED: ${{ steps.create-tag.outputs.version-bumped }}
         NEW_VERSION: ${{ steps.create-tag.outputs.new-version }}
+        PULL_REQUEST_NUMBER: ${{ steps.bump-version.outputs.pull-request-number }}
+        PULL_REQUEST_URL: ${{ steps.bump-version.outputs.pull-request-url }}
       run: |
         echo "version-bumped=${VERSION_BUMPED:-false}" >> "$GITHUB_OUTPUT"
         echo "new-version=${NEW_VERSION:-}" >> "$GITHUB_OUTPUT"
+        echo "pull-request-number=${PULL_REQUEST_NUMBER:-}" >> "$GITHUB_OUTPUT"
+        echo "pull-request-url=${PULL_REQUEST_URL:-}" >> "$GITHUB_OUTPUT"
 
 branding:
   icon: 'chevrons-up'

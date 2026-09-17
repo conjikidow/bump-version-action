@@ -229,10 +229,15 @@ which is why that example zeroes it with `permissions: {}`.
 
 ### Outputs
 
-| Name             | Description                                                                      |
-| ---------------- | -------------------------------------------------------------------------------- |
-| `version-bumped` | `true` when the version was bumped and a new tag was created; otherwise `false`. |
-| `new-version`    | New version number (e.g. `1.2.4`). Empty when `version-bumped` is `false`.       |
+| Name                  | Description                                                                      |
+| --------------------- | -------------------------------------------------------------------------------- |
+| `version-bumped`      | `true` when the version was bumped and a new tag was created; otherwise `false`. |
+| `new-version`         | New version number (e.g. `1.2.4`). Empty when `version-bumped` is `false`.       |
+| `pull-request-number` | Number of the version bump pull request. Empty when no pull request was created. |
+| `pull-request-url`    | URL of the version bump pull request. Empty when no pull request was created.    |
+
+The `pull-request-*` outputs are set in the run that opens the version bump pull request,
+while `version-bumped` becomes `true` only in the later run triggered by merging it.
 
 ### bump-my-version Configuration
 
