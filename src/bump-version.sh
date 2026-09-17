@@ -42,15 +42,21 @@ git push -f origin "$new_branch"
 
 # Create a pull request for the version bump
 echo "Creating pull request..."
-if ! PR_OUTPUT=$(gh pr create --title "chore(release): bump version from ${previous_version} to ${current_version}" \
+pr_create_error_file=$(mktemp)
+trap 'rm -f "$pr_create_error_file"' EXIT
+if ! pr_url=$(gh pr create --title "chore(release): bump version from ${previous_version} to ${current_version}" \
   --body "This PR updates the version from ${previous_version} to ${current_version}." \
   --base "$base_branch" \
   --head "$new_branch" \
-  --label "$LABELS_TO_ADD" 2>&1); then
+  --label "$LABELS_TO_ADD" 2>"$pr_create_error_file"); then
+  PR_OUTPUT=$(<"$pr_create_error_file")
   if echo "$PR_OUTPUT" | grep -q "GitHub Actions is not permitted to create or approve pull requests"; then
     echo "Error: Failed to create pull request due to insufficient permissions." >&2
     echo "Please ensure 'Allow GitHub Actions to create and approve pull requests' is enabled in your repository settings (Settings > Actions > General > Workflow permissions). Refer to the README for more details." >&2
     exit 1
+  elif [[ -n $pr_url ]]; then
+    echo "::warning::Pull request was created but adding labels to it failed: ${pr_url}"
+    echo "$PR_OUTPUT" >&2
   else
     echo "Error: Failed to create pull request." >&2
     echo "$PR_OUTPUT" >&2
@@ -58,4 +64,7 @@ if ! PR_OUTPUT=$(gh pr create --title "chore(release): bump version from ${previ
   fi
 fi
 
-echo "Pull request created successfully."
+echo "Pull request created successfully: ${pr_url}"
+
+echo "pull-request-number=${pr_url##*/}" >>"$GITHUB_OUTPUT"
+echo "pull-request-url=${pr_url}" >>"$GITHUB_OUTPUT"
