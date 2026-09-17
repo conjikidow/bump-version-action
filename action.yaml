@@ -80,7 +80,7 @@ runs:
           echo "Skipping job because the event is unsupported: ${{ github.event_name }}"
         fi
 
-        echo "SKIP_JOB=true" >> "$GITHUB_ENV"
+        echo "SKIP_JOB=true" >> "${GITHUB_ENV}"
 
     - name: Checkout repository
       if: env.SKIP_JOB != 'true'
@@ -163,10 +163,10 @@ runs:
         PULL_REQUEST_NUMBER: ${{ steps.bump-version.outputs.pull-request-number }}
         PULL_REQUEST_URL: ${{ steps.bump-version.outputs.pull-request-url }}
       run: |
-        echo "version-bumped=${VERSION_BUMPED:-false}" >> "$GITHUB_OUTPUT"
-        echo "new-version=${NEW_VERSION:-}" >> "$GITHUB_OUTPUT"
-        echo "pull-request-number=${PULL_REQUEST_NUMBER:-}" >> "$GITHUB_OUTPUT"
-        echo "pull-request-url=${PULL_REQUEST_URL:-}" >> "$GITHUB_OUTPUT"
+        echo "version-bumped=${VERSION_BUMPED:-false}" >> "${GITHUB_OUTPUT}"
+        echo "new-version=${NEW_VERSION:-}" >> "${GITHUB_OUTPUT}"
+        echo "pull-request-number=${PULL_REQUEST_NUMBER:-}" >> "${GITHUB_OUTPUT}"
+        echo "pull-request-url=${PULL_REQUEST_URL:-}" >> "${GITHUB_OUTPUT}"
 
 branding:
   icon: 'chevrons-up'

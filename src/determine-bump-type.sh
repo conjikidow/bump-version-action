@@ -29,7 +29,7 @@ if [[ ${GITHUB_EVENT_NAME} == "workflow_dispatch" ]]; then
   fi
 
   echo "Using manual bump type: ${MANUAL_BUMP_TYPE}"
-  write_output "type" "$MANUAL_BUMP_TYPE"
+  write_output "type" "${MANUAL_BUMP_TYPE}"
   exit 0
 fi
 
@@ -43,23 +43,23 @@ echo "Fetching PR labels..."
 labels=$(gh api --jq '.labels.[].name' "/repos/{owner}/{repo}/pulls/${PR_NUMBER}" | tr '\n' ',' | sed 's/,$//')
 echo "Found labels: ${labels}"
 
-# Return success if a non-empty label name is found inside $labels
+# Return success if a non-empty label name is found inside ${labels}
 has_label() {
   local needle=$1
-  [[ -n $needle && $labels == *"$needle"* ]]
+  [[ -n ${needle} && ${labels} == *"${needle}"* ]]
 }
 
 # Determine bump type
 bump_type="none"
-if has_label "$LABEL_MAJOR"; then
+if has_label "${LABEL_MAJOR}"; then
   bump_type="major"
-elif has_label "$LABEL_MINOR"; then
+elif has_label "${LABEL_MINOR}"; then
   bump_type="minor"
-elif has_label "$LABEL_PATCH"; then
+elif has_label "${LABEL_PATCH}"; then
   bump_type="patch"
 fi
 
 echo "Bump type determined: ${bump_type}"
 
 # Output results for GitHub Actions
-write_output "type" "$bump_type"
+write_output "type" "${bump_type}"
