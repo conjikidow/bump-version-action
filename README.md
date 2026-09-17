@@ -23,6 +23,8 @@ incrementing the version number based on the labels applied to the PR.
 
 ## Usage
 
+The action requires `gh`, which the GitHub-hosted runner images provide.
+
 ### Workflow Example
 
 Below are example workflows you can add to your repository to automatically bump the version when a PR is merged.
@@ -59,8 +61,6 @@ jobs:
           labels-to-add: 'automated,version-bump'
           create-release: 'true'
 ```
-
-This action shells out to `gh`, which the GitHub-hosted runner images provide.
 
 The examples reference actions by tag for readability.
 For production workflows, consider pinning each action to a full-length commit SHA,
