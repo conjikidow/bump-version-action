@@ -45,16 +45,16 @@ inputs:
     default: ${{ github.token }}
 outputs:
   version-bumped:
-    description: "`true` when the version was bumped and a new tag was created; otherwise `false`."
+    description: '`true` when the version was bumped and a new tag was created; otherwise `false`.'
     value: ${{ steps.set-outputs.outputs.version-bumped }}
   new-version:
-    description: "New version number (e.g. `1.2.4`). Empty when `version-bumped` is `false`."
+    description: 'New version number (e.g. `1.2.4`). Empty when `version-bumped` is `false`.'
     value: ${{ steps.set-outputs.outputs.new-version }}
   pull-request-number:
-    description: "Number of the version bump pull request. Empty when no pull request was created."
+    description: 'Number of the version bump pull request. Empty when no pull request was created.'
     value: ${{ steps.set-outputs.outputs.pull-request-number }}
   pull-request-url:
-    description: "URL of the version bump pull request. Empty when no pull request was created."
+    description: 'URL of the version bump pull request. Empty when no pull request was created.'
     value: ${{ steps.set-outputs.outputs.pull-request-url }}
 
 runs:
