@@ -8,15 +8,15 @@ branch_name="${PR_HEAD_REF}"
 
 # Ensure branch_name is not empty
 if [ -z "${branch_name}" ]; then
-  log_error "branch_name is not set."
+  log_error 'branch_name is not set.'
   exit 1
 fi
 
 # Verify if branch_name matches the expected pattern
 if ! [[ ${branch_name} =~ ^${BRANCH_PREFIX}/bump-version-from-[0-9]+\.[0-9]+\.[0-9]+-to-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-  echo "This branch does not match the expected pattern. Skipping."
-  write_output "version-bumped" "false"
-  write_output "new-version" ""
+  echo 'This branch does not match the expected pattern. Skipping.'
+  write_output 'version-bumped' 'false'
+  write_output 'new-version' ''
   exit 0
 fi
 
@@ -36,7 +36,7 @@ echo "Creating new tag: v${new_version}"
 git tag "v${new_version}" "${PR_MERGE_COMMIT_SHA}"
 git push origin "v${new_version}"
 
-if [[ ${UPDATE_MAJOR_MINOR_TAGS:-false} == "true" ]]; then
+if [[ ${UPDATE_MAJOR_MINOR_TAGS:-false} == 'true' ]]; then
   # Fetch all tags from the remote
   all_tags=$(git ls-remote --tags origin)
 
@@ -67,5 +67,5 @@ if [[ ${UPDATE_MAJOR_MINOR_TAGS:-false} == "true" ]]; then
   fi
 fi
 
-write_output "version-bumped" "true"
-write_output "new-version" "${new_version}"
+write_output 'version-bumped' 'true'
+write_output 'new-version' "${new_version}"

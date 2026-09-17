@@ -63,24 +63,24 @@ runs:
     - name: Check execution conditions
       shell: bash
       run: |
-        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-          echo "Manual workflow dispatch detected."
+        if [[ "${{ github.event_name }}" == 'workflow_dispatch' ]]; then
+          echo 'Manual workflow dispatch detected.'
           exit 0
         fi
 
-        if [[ "${{ github.event_name }}" == "pull_request" && \
-              "${{ github.event.pull_request.merged }}" == "true" ]]; then
-          echo "Merged pull request detected."
+        if [[ "${{ github.event_name }}" == 'pull_request' && \
+              "${{ github.event.pull_request.merged }}" == 'true' ]]; then
+          echo 'Merged pull request detected.'
           exit 0
         fi
 
-        if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-          echo "Skipping job because the pull request is not merged."
+        if [[ "${{ github.event_name }}" == 'pull_request' ]]; then
+          echo 'Skipping job because the pull request is not merged.'
         else
           echo "Skipping job because the event is unsupported: ${{ github.event_name }}"
         fi
 
-        echo "SKIP_JOB=true" >> "${GITHUB_ENV}"
+        echo 'SKIP_JOB=true' >> "${GITHUB_ENV}"
 
     - name: Checkout repository
       if: env.SKIP_JOB != 'true'
@@ -93,8 +93,8 @@ runs:
       if: env.SKIP_JOB != 'true'
       shell: bash
       run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
     - name: Determine bump type
       if: env.SKIP_JOB != 'true'

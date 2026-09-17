@@ -18,7 +18,7 @@ ${BUMP_MY_VERSION} bump "${BUMP_TYPE}"
 # Get the new version after bumping
 current_version=$(${BUMP_MY_VERSION} show-bump | head -1 | awk '{print $1}')
 if [[ ${previous_version} == "${current_version}" ]]; then
-  echo "No version bump required."
+  echo 'No version bump required.'
   exit 0
 fi
 
@@ -37,11 +37,11 @@ git add .
 git commit -m "chore(release): bump version from ${previous_version} to ${current_version}"
 
 # Push the new branch to the repository
-echo "Pushing new branch to remote..."
+echo 'Pushing new branch to remote...'
 git push -f origin "${new_branch}"
 
 # Create a pull request for the version bump
-echo "Creating pull request..."
+echo 'Creating pull request...'
 pr_create_error_file=$(mktemp)
 trap 'rm -f "${pr_create_error_file}"' EXIT
 if ! pr_url=$(gh pr create --title "chore(release): bump version from ${previous_version} to ${current_version}" \
@@ -50,14 +50,14 @@ if ! pr_url=$(gh pr create --title "chore(release): bump version from ${previous
   --head "${new_branch}" \
   --label "${LABELS_TO_ADD}" 2>"${pr_create_error_file}"); then
   PR_OUTPUT=$(<"${pr_create_error_file}")
-  if echo "${PR_OUTPUT}" | grep -q "GitHub Actions is not permitted to create or approve pull requests"; then
+  if echo "${PR_OUTPUT}" | grep -q 'GitHub Actions is not permitted to create or approve pull requests'; then
     log_error "Failed to create pull request due to insufficient permissions. Please ensure 'Allow GitHub Actions to create and approve pull requests' is enabled in your repository settings (Settings > Actions > General > Workflow permissions). Refer to the README for more details."
     exit 1
   elif [[ -n ${pr_url} ]]; then
     log_warn "Pull request was created but adding labels to it failed: ${pr_url}"
     echo "${PR_OUTPUT}" >&2
   else
-    log_error "Failed to create pull request."
+    log_error 'Failed to create pull request.'
     echo "${PR_OUTPUT}" >&2
     exit 1
   fi
@@ -65,5 +65,5 @@ fi
 
 echo "Pull request created successfully: ${pr_url}"
 
-write_output "pull-request-number" "${pr_url##*/}"
-write_output "pull-request-url" "${pr_url}"
+write_output 'pull-request-number' "${pr_url##*/}"
+write_output 'pull-request-url' "${pr_url}"
