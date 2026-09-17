@@ -4,10 +4,7 @@ set -euo pipefail
 # shellcheck disable=SC1091
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
-if ! command -v gh &>/dev/null; then
-  log_error "GitHub CLI (gh) is not installed. Please install it to continue."
-  exit 1
-fi
+require_cmd gh
 
 validate_manual_bump_type() {
   case "$1" in
@@ -32,7 +29,7 @@ if [[ ${GITHUB_EVENT_NAME} == "workflow_dispatch" ]]; then
   fi
 
   echo "Using manual bump type: ${MANUAL_BUMP_TYPE}"
-  echo "type=${MANUAL_BUMP_TYPE}" >>"$GITHUB_OUTPUT"
+  write_output "type" "$MANUAL_BUMP_TYPE"
   exit 0
 fi
 
@@ -65,4 +62,4 @@ fi
 echo "Bump type determined: ${bump_type}"
 
 # Output results for GitHub Actions
-echo "type=${bump_type}" >>"$GITHUB_OUTPUT"
+write_output "type" "$bump_type"

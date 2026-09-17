@@ -4,10 +4,7 @@ set -euo pipefail
 # shellcheck disable=SC1091
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
-if ! command -v gh &>/dev/null; then
-  log_error "GitHub CLI (gh) is not installed. Please install it to continue."
-  exit 1
-fi
+require_cmd gh
 
 export BUMP_MY_VERSION="uvx bump-my-version@${VERSION_OF_BUMP_MY_VERSION}"
 
@@ -68,5 +65,5 @@ fi
 
 echo "Pull request created successfully: ${pr_url}"
 
-echo "pull-request-number=${pr_url##*/}" >>"$GITHUB_OUTPUT"
-echo "pull-request-url=${pr_url}" >>"$GITHUB_OUTPUT"
+write_output "pull-request-number" "${pr_url##*/}"
+write_output "pull-request-url" "$pr_url"

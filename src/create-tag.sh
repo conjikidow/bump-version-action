@@ -15,8 +15,8 @@ fi
 # Verify if branch_name matches the expected pattern
 if ! [[ $branch_name =~ ^${BRANCH_PREFIX}/bump-version-from-[0-9]+\.[0-9]+\.[0-9]+-to-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   echo "This branch does not match the expected pattern. Skipping."
-  echo "version-bumped=false" >>"$GITHUB_OUTPUT"
-  echo "new-version=" >>"$GITHUB_OUTPUT"
+  write_output "version-bumped" "false"
+  write_output "new-version" ""
   exit 0
 fi
 
@@ -67,5 +67,5 @@ if [[ ${UPDATE_MAJOR_MINOR_TAGS:-false} == "true" ]]; then
   fi
 fi
 
-echo "version-bumped=true" >>"$GITHUB_OUTPUT"
-echo "new-version=${new_version}" >>"$GITHUB_OUTPUT"
+write_output "version-bumped" "true"
+write_output "new-version" "$new_version"

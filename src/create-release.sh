@@ -4,10 +4,7 @@ set -euo pipefail
 # shellcheck disable=SC1091
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
-if ! command -v gh &>/dev/null; then
-  log_error "GitHub CLI (gh) is not installed. Please install it to continue."
-  exit 1
-fi
+require_cmd gh
 
 NEW_VERSION_TAG="v${NEW_VERSION}"
 
