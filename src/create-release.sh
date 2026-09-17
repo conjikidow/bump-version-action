@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-if ! command -v gh &>/dev/null; then
-  echo "Error: GitHub CLI (gh) is not installed. Please install it to continue." >&2
-  exit 1
-fi
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+
+require_cmd gh
 
 NEW_VERSION_TAG="v${NEW_VERSION}"
 
