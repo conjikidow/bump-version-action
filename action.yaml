@@ -45,16 +45,16 @@ inputs:
     default: ${{ github.token }}
 outputs:
   version-bumped:
-    description: "`true` when the version was bumped and a new tag was created; otherwise `false`."
+    description: '`true` when the version was bumped and a new tag was created; otherwise `false`.'
     value: ${{ steps.set-outputs.outputs.version-bumped }}
   new-version:
-    description: "New version number (e.g. `1.2.4`). Empty when `version-bumped` is `false`."
+    description: 'New version number (e.g. `1.2.4`). Empty when `version-bumped` is `false`.'
     value: ${{ steps.set-outputs.outputs.new-version }}
   pull-request-number:
-    description: "Number of the version bump pull request. Empty when no pull request was created."
+    description: 'Number of the version bump pull request. Empty when no pull request was created.'
     value: ${{ steps.set-outputs.outputs.pull-request-number }}
   pull-request-url:
-    description: "URL of the version bump pull request. Empty when no pull request was created."
+    description: 'URL of the version bump pull request. Empty when no pull request was created.'
     value: ${{ steps.set-outputs.outputs.pull-request-url }}
 
 runs:
@@ -63,24 +63,24 @@ runs:
     - name: Check execution conditions
       shell: bash
       run: |
-        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-          echo "Manual workflow dispatch detected."
+        if [[ "${{ github.event_name }}" == 'workflow_dispatch' ]]; then
+          echo 'Manual workflow dispatch detected.'
           exit 0
         fi
 
-        if [[ "${{ github.event_name }}" == "pull_request" && \
-              "${{ github.event.pull_request.merged }}" == "true" ]]; then
-          echo "Merged pull request detected."
+        if [[ "${{ github.event_name }}" == 'pull_request' && \
+              "${{ github.event.pull_request.merged }}" == 'true' ]]; then
+          echo 'Merged pull request detected.'
           exit 0
         fi
 
-        if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-          echo "Skipping job because the pull request is not merged."
+        if [[ "${{ github.event_name }}" == 'pull_request' ]]; then
+          echo 'Skipping job because the pull request is not merged.'
         else
           echo "Skipping job because the event is unsupported: ${{ github.event_name }}"
         fi
 
-        echo "SKIP_JOB=true" >> "$GITHUB_ENV"
+        echo 'SKIP_JOB=true' >> "${GITHUB_ENV}"
 
     - name: Checkout repository
       if: env.SKIP_JOB != 'true'
@@ -93,8 +93,8 @@ runs:
       if: env.SKIP_JOB != 'true'
       shell: bash
       run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
     - name: Determine bump type
       if: env.SKIP_JOB != 'true'
@@ -163,10 +163,10 @@ runs:
         PULL_REQUEST_NUMBER: ${{ steps.bump-version.outputs.pull-request-number }}
         PULL_REQUEST_URL: ${{ steps.bump-version.outputs.pull-request-url }}
       run: |
-        echo "version-bumped=${VERSION_BUMPED:-false}" >> "$GITHUB_OUTPUT"
-        echo "new-version=${NEW_VERSION:-}" >> "$GITHUB_OUTPUT"
-        echo "pull-request-number=${PULL_REQUEST_NUMBER:-}" >> "$GITHUB_OUTPUT"
-        echo "pull-request-url=${PULL_REQUEST_URL:-}" >> "$GITHUB_OUTPUT"
+        echo "version-bumped=${VERSION_BUMPED:-false}" >> "${GITHUB_OUTPUT}"
+        echo "new-version=${NEW_VERSION:-}" >> "${GITHUB_OUTPUT}"
+        echo "pull-request-number=${PULL_REQUEST_NUMBER:-}" >> "${GITHUB_OUTPUT}"
+        echo "pull-request-url=${PULL_REQUEST_URL:-}" >> "${GITHUB_OUTPUT}"
 
 branding:
   icon: 'chevrons-up'
