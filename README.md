@@ -60,6 +60,8 @@ jobs:
           create-release: 'true'
 ```
 
+This action shells out to `gh`, which the GitHub-hosted runner images provide.
+
 The examples reference actions by tag for readability.
 For production workflows, consider pinning each action to a full-length commit SHA,
 as [GitHub recommends](https://docs.github.com/en/actions/reference/security/secure-use#using-third-party-actions).
