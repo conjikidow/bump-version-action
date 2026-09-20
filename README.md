@@ -68,14 +68,14 @@ as [GitHub recommends](https://docs.github.com/en/actions/reference/security/sec
 Releases of this action are immutable, so its full version tags (`vX.Y.Z`) are already locked to a single commit.
 
 > [!IMPORTANT]
-> Workflows do not run automatically on a pull request created with the default `${{ github.token }}`.
+> Workflows do not run automatically on a PR created with the default `${{ github.token }}`.
 > They wait for approval from a user with write access to the repository.
 > See [Example with a GitHub App Token](#example-with-a-github-app-token) to avoid that approval.
 
 #### Example with a GitHub App Token
 
 The following example generates a GitHub App installation token and passes it to `github-token`,
-so that the workflows triggered by the version bump pull request run without approval.
+so that the workflows triggered by the version bump PR run without approval.
 
 ```yaml
 name: Bump Version
@@ -194,11 +194,11 @@ jobs:
 ### Permissions
 
 The token passed to `github-token` needs `contents: write` to push the version bump branch and the tag,
-and `pull-requests: write` to open the version bump pull request.
+and `pull-requests: write` to open the version bump PR.
 
 The default `${{ github.token }}` carries whatever the workflow grants it,
 so grant those scopes in the job, as the examples that keep it do.
-`GITHUB_TOKEN` also needs the repository itself to allow it to open pull requests:
+`GITHUB_TOKEN` also needs the repository itself to allow it to open PRs:
 
 1. Go to the **Settings** tab of your repository.
 2. On the left-hand menu, select **Actions/General**.
@@ -220,7 +220,7 @@ which is why that example zeroes it with `permissions: {}`.
 | `label-patch`                | Label that triggers a patch version bump.                                       | No       | `'patch'`             |
 | `manual-bump-type`           | Bump type used for manual workflow dispatch runs: `major`, `minor`, or `patch`. | No       | `''`                  |
 | `branch-prefix`              | Prefix of the version bump branch name.                                         | No       | `'workflow'`          |
-| `labels-to-add`              | Labels to add to the version bump pull request, separated by commas.            | No       | `''`                  |
+| `labels-to-add`              | Labels to add to the version bump PR, separated by commas.                      | No       | `''`                  |
 | `update-major-minor-tags`    | Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.           | No       | `'false'`             |
 | `create-release`             | Whether to create a GitHub Release for the new tag.                             | No       | `'false'`             |
 | `github-token`               | Token used to authenticate with GitHub.                                         | No       | `${{ github.token }}` |
@@ -235,10 +235,10 @@ which is why that example zeroes it with `permissions: {}`.
 | --------------------- | -------------------------------------------------------------------------------- |
 | `version-bumped`      | `true` when the version was bumped and a new tag was created; otherwise `false`. |
 | `new-version`         | New version number (e.g. `1.2.4`). Empty when `version-bumped` is `false`.       |
-| `pull-request-number` | Number of the version bump pull request. Empty when no pull request was created. |
-| `pull-request-url`    | URL of the version bump pull request. Empty when no pull request was created.    |
+| `pull-request-number` | Number of the version bump PR. Empty when no PR was created.                     |
+| `pull-request-url`    | URL of the version bump PR. Empty when no PR was created.                        |
 
-The `pull-request-*` outputs are set in the run that opens the version bump pull request,
+The `pull-request-*` outputs are set in the run that opens the version bump PR,
 while `version-bumped` becomes `true` only in the later run triggered by merging it.
 
 ### bump-my-version Configuration
@@ -277,7 +277,7 @@ For more details, refer to the official [bump-my-version documentation](https://
 ## How It Works
 
 1. Checks the execution conditions
-   - Runs for merged pull requests and manual workflow dispatches.
+   - Runs for merged PRs and manual workflow dispatches.
    - For other cases, the action skips execution.
 
 2. Determines the bump type
