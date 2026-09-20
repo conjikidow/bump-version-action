@@ -28,7 +28,7 @@ inputs:
     required: false
     default: 'workflow'
   labels-to-add:
-    description: 'Labels to add to the version bump pull request, separated by commas.'
+    description: 'Labels to add to the version bump PR, separated by commas.'
     required: false
     default: ''
   update-major-minor-tags:
@@ -51,10 +51,10 @@ outputs:
     description: 'New version number (e.g. `1.2.4`). Empty when `version-bumped` is `false`.'
     value: ${{ steps.set-outputs.outputs.new-version }}
   pull-request-number:
-    description: 'Number of the version bump pull request. Empty when no pull request was created.'
+    description: 'Number of the version bump PR. Empty when no PR was created.'
     value: ${{ steps.set-outputs.outputs.pull-request-number }}
   pull-request-url:
-    description: 'URL of the version bump pull request. Empty when no pull request was created.'
+    description: 'URL of the version bump PR. Empty when no PR was created.'
     value: ${{ steps.set-outputs.outputs.pull-request-url }}
 
 runs:
