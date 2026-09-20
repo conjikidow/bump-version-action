@@ -81,10 +81,10 @@ fi
 
 echo "Pull request created successfully: ${pr_url}"
 
-if [[ -n ${AUTO_MERGE:-} ]]; then
-  echo "Enabling auto-merge on the pull request..."
+if [[ -n ${AUTO_MERGE} ]]; then
+  echo 'Enabling auto-merge on the pull request...'
   if ! gh pr merge --auto "--${AUTO_MERGE}" "${pr_url}"; then
-    log_warn "Failed to enable auto-merge on ${pr_url}. Check that the repository allows auto-merge and the '${AUTO_MERGE}' merge method."
+    log_warn "Failed to merge or enable auto-merge on ${pr_url} with the '${AUTO_MERGE}' method. Check the repository's auto-merge setting, the merge methods it allows, and the requirements of the base branch."
   fi
 fi
 

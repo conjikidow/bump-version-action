@@ -195,7 +195,7 @@ jobs:
 ### Permissions
 
 The token passed to `github-token` needs `contents: write` to push the version bump branch and the tag,
-and `pull-requests: write` to open the version bump PR.
+and `pull-requests: write` to open the version bump PR and, with `auto-merge`, to merge it.
 
 The default `${{ github.token }}` carries whatever the workflow grants it,
 so grant those scopes in the job, as the examples that keep it do.
@@ -233,13 +233,15 @@ which is why that example zeroes it with `permissions: {}`.
 - `auto-merge` needs **Allow auto-merge** enabled in the repository settings,
   and the merge method it names must be allowed there as well.
   Leave it empty to merge the version bump PR yourself.
-- Auto-merge waits only for the merge requirements the base branch defines.
-  Without required status checks, the PR is merged as soon as it is mergeable,
-  before the workflows running on it finish.
-- Enable auto-merge with a GitHub App installation token, as in
-  [Example with a GitHub App Token](#example-with-a-github-app-token).
+- Auto-merge waits only for the merge requirements the base branch defines,
+  so set it up on a base branch that requires status checks or reviews.
+  With nothing left to wait for, the action either merges the PR right away
+  or GitHub refuses to enable auto-merge on it, depending on how far the mergeability has been computed by then.
+- Enable auto-merge with a GitHub App installation token,
+  as in [Example with a GitHub App Token](#example-with-a-github-app-token).
   With the default `${{ github.token }}`, the workflows on the version bump PR wait for approval,
-  so the required checks never pass.
+  so its required checks do not pass unattended, and a merge performed by `GITHUB_TOKEN`
+  does not trigger the run that creates the tag.
 
 ### Outputs
 
@@ -305,7 +307,8 @@ For more details, refer to the official [bump-my-version documentation](https://
 4. Creates a new branch and PR for the version bump
    - If the version is updated, a new branch (`${branch-prefix}/bump-version-from-X.Y.W-to-X.Y.Z`) is created.
    - A PR is automatically opened to merge the version bump.
-   - If `auto-merge` names a merge method, auto-merge is enabled on that PR.
+   - If `auto-merge` names a merge method, auto-merge is enabled on that PR,
+     or the PR is merged right away when nothing blocks it.
 
 5. After merging, creates a Git tag
    - The branch name is parsed to extract the new version number.
