@@ -31,6 +31,12 @@ inputs:
     description: 'Labels to add to the version bump PR, separated by commas.'
     required: false
     default: ''
+  auto-merge:
+    description: >-
+      Merge method used to enable auto-merge on the version bump PR:
+      `merge`, `squash`, or `rebase`. Empty disables auto-merge.
+    required: false
+    default: ''
   update-major-minor-tags:
     description: 'Whether to create or update the major (`vX`) and minor (`vX.Y`) tags to point to the new release.'
     required: false
@@ -123,6 +129,7 @@ runs:
         GH_REPO: ${{ github.repository }}
         VERSION_OF_BUMP_MY_VERSION: ${{ inputs.version-of-bump-my-version }}
         LABELS_TO_ADD: ${{ inputs.labels-to-add }}
+        AUTO_MERGE: ${{ inputs.auto-merge }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
         BUMP_TYPE: ${{ steps.bump-type.outputs.type }}
       run: bash "${{ github.action_path }}/src/bump-version.sh"
