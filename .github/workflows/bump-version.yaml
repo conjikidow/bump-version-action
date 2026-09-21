@@ -22,12 +22,19 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    permissions:
-      contents: write
-      pull-requests: write
 
     steps:
-      - uses: conjikidow/bump-version-action@42a402616b7be8b18d7d6daf06d51b5836fe5ae0 # v4.1.0
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.GH_APP_CLIENT_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Bump version
+        uses: conjikidow/bump-version-action@42a402616b7be8b18d7d6daf06d51b5836fe5ae0 # v4.1.0
         with:
           label-major: 'update::major'
           label-minor: 'update::minor'
@@ -35,3 +42,4 @@ jobs:
           manual-bump-type: ${{ inputs.bump_type }}
           labels-to-add: 'automated,versioning'
           create-release: 'true'
+          github-token: ${{ steps.app-token.outputs.token }}
