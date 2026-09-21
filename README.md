@@ -235,8 +235,7 @@ which is why that example zeroes it with `permissions: {}`.
   Leave it empty to merge the version bump PR yourself.
 - Auto-merge waits only for the merge requirements the base branch defines,
   so set it up on a base branch that requires status checks or reviews.
-  With nothing left to wait for, the action either merges the PR right away
-  or GitHub refuses to enable auto-merge on it, depending on how far the mergeability has been computed by then.
+  With nothing left to wait for, the action merges the PR right away instead of arming it.
 - Enable auto-merge with a GitHub App installation token,
   as in [Example with a GitHub App Token](#example-with-a-github-app-token).
   With the default `${{ github.token }}`, the workflows on the version bump PR wait for approval,

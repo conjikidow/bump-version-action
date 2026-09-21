@@ -83,8 +83,27 @@ echo "Pull request created successfully: ${pr_url}"
 
 if [[ -n ${AUTO_MERGE} ]]; then
   echo 'Enabling auto-merge on the pull request...'
-  if ! gh pr merge --auto "--${AUTO_MERGE}" "${pr_url}"; then
-    log_warn "Failed to merge or enable auto-merge on ${pr_url} with the '${AUTO_MERGE}' method. Check the repository's auto-merge setting, the merge methods it allows, and the requirements of the base branch."
+
+  # Retrying re-reads the mergeability that GitHub is still computing right after the pull request is created.
+  merge_attempts=3
+  merge_succeeded='false'
+  attempt=1
+  while [[ ${attempt} -le ${merge_attempts} ]]; do
+    if merge_output="$(gh pr merge --auto "--${AUTO_MERGE}" "${pr_url}" 2>&1)"; then
+      merge_succeeded='true'
+      break
+    fi
+    if [[ ${attempt} -lt ${merge_attempts} ]]; then
+      sleep "$((attempt * 2))"
+    fi
+    attempt=$((attempt + 1))
+  done
+
+  if [[ ${merge_succeeded} == 'true' ]]; then
+    echo "${merge_output}"
+  else
+    log_warn "Failed to merge or enable auto-merge on ${pr_url} with the '${AUTO_MERGE}' method after ${merge_attempts} attempts. Check the repository's auto-merge setting, the merge methods it allows, and the requirements of the base branch."
+    echo "${merge_output}" >&2
   fi
 fi
 
