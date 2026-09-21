@@ -6,6 +6,22 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 require_cmd gh
 
+validate_auto_merge() {
+  case "$1" in
+  merge | squash | rebase | '')
+    return 0
+    ;;
+  *)
+    return 1
+    ;;
+  esac
+}
+
+if ! validate_auto_merge "${AUTO_MERGE:-}"; then
+  log_error "Invalid auto-merge value '${AUTO_MERGE}': expected 'merge', 'squash', or 'rebase' (leave empty to disable)."
+  exit 1
+fi
+
 export BUMP_MY_VERSION="uvx bump-my-version@${VERSION_OF_BUMP_MY_VERSION}"
 
 # Get the current version before bumping
@@ -64,6 +80,32 @@ if ! pr_url="$(gh pr create --title "chore(release): bump version from ${previou
 fi
 
 echo "Pull request created successfully: ${pr_url}"
+
+if [[ -n ${AUTO_MERGE} ]]; then
+  echo 'Enabling auto-merge on the pull request...'
+
+  # Retrying re-reads the mergeability that GitHub is still computing right after the pull request is created.
+  merge_attempts=3
+  merge_succeeded='false'
+  attempt=1
+  while [[ ${attempt} -le ${merge_attempts} ]]; do
+    if merge_output="$(gh pr merge --auto "--${AUTO_MERGE}" "${pr_url}" 2>&1)"; then
+      merge_succeeded='true'
+      break
+    fi
+    if [[ ${attempt} -lt ${merge_attempts} ]]; then
+      sleep "$((attempt * 2))"
+    fi
+    attempt=$((attempt + 1))
+  done
+
+  if [[ ${merge_succeeded} == 'true' ]]; then
+    echo "${merge_output}"
+  else
+    log_warn "Failed to merge or enable auto-merge on ${pr_url} with the '${AUTO_MERGE}' method after ${merge_attempts} attempts. Check the repository's auto-merge setting, the merge methods it allows, and the requirements of the base branch."
+    echo "${merge_output}" >&2
+  fi
+fi
 
 write_output 'pull-request-number' "${pr_url##*/}"
 write_output 'pull-request-url' "${pr_url}"

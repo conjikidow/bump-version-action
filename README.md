@@ -18,6 +18,7 @@ incrementing the version number based on the labels applied to the PR.
 - Uses [bump-my-version](https://github.com/callowayproject/bump-my-version)
   to increment the version according to semantic versioning.
 - Creates a new branch and a PR for the version bump.
+  - Optionally enables auto-merge on that PR.
 - Generates a corresponding Git tag once the version bump PR is merged.
 - Optionally creates a GitHub Release for the new tag.
 
@@ -194,7 +195,7 @@ jobs:
 ### Permissions
 
 The token passed to `github-token` needs `contents: write` to push the version bump branch and the tag,
-and `pull-requests: write` to open the version bump PR.
+and `pull-requests: write` to open the version bump PR and, with `auto-merge`, to merge it.
 
 The default `${{ github.token }}` carries whatever the workflow grants it,
 so grant those scopes in the job, as the examples that keep it do.
@@ -212,22 +213,34 @@ which is why that example zeroes it with `permissions: {}`.
 
 ### Inputs
 
-| Name                         | Description                                                                     | Required | Default               |
-| ---------------------------- | ------------------------------------------------------------------------------- | -------- | --------------------- |
-| `version-of-bump-my-version` | Version of `bump-my-version` to use.                                            | No       | `'latest'`            |
-| `label-major`                | Label that triggers a major version bump.                                       | No       | `'major'`             |
-| `label-minor`                | Label that triggers a minor version bump.                                       | No       | `'minor'`             |
-| `label-patch`                | Label that triggers a patch version bump.                                       | No       | `'patch'`             |
-| `manual-bump-type`           | Bump type used for manual workflow dispatch runs: `major`, `minor`, or `patch`. | No       | `''`                  |
-| `branch-prefix`              | Prefix of the version bump branch name.                                         | No       | `'workflow'`          |
-| `labels-to-add`              | Labels to add to the version bump PR, separated by commas.                      | No       | `''`                  |
-| `update-major-minor-tags`    | Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.           | No       | `'false'`             |
-| `create-release`             | Whether to create a GitHub Release for the new tag.                             | No       | `'false'`             |
-| `github-token`               | Token used to authenticate with GitHub.                                         | No       | `${{ github.token }}` |
+| Name                         | Description                                                                                    | Required | Default               |
+| ---------------------------- | ---------------------------------------------------------------------------------------------- | -------- | --------------------- |
+| `version-of-bump-my-version` | Version of `bump-my-version` to use.                                                           | No       | `'latest'`            |
+| `label-major`                | Label that triggers a major version bump.                                                      | No       | `'major'`             |
+| `label-minor`                | Label that triggers a minor version bump.                                                      | No       | `'minor'`             |
+| `label-patch`                | Label that triggers a patch version bump.                                                      | No       | `'patch'`             |
+| `manual-bump-type`           | Bump type used for manual workflow dispatch runs: `major`, `minor`, or `patch`.                | No       | `''`                  |
+| `branch-prefix`              | Prefix of the version bump branch name.                                                        | No       | `'workflow'`          |
+| `labels-to-add`              | Labels to add to the version bump PR, separated by commas.                                     | No       | `''`                  |
+| `auto-merge`                 | Merge method used to enable auto-merge on the version bump PR: `merge`, `squash`, or `rebase`. | No       | `''`                  |
+| `update-major-minor-tags`    | Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.                          | No       | `'false'`             |
+| `create-release`             | Whether to create a GitHub Release for the new tag.                                            | No       | `'false'`             |
+| `github-token`               | Token used to authenticate with GitHub.                                                        | No       | `${{ github.token }}` |
 
 - Set any of `label-major`, `label-minor`, or `label-patch` to an empty string (`''`) to disable that bump type.
 - `manual-bump-type` is required for `workflow_dispatch` runs; the action fails when it is empty.
 - Any labels specified in `labels-to-add` must already exist in your repository; the action fails if they do not.
+- `auto-merge` needs **Allow auto-merge** enabled in the repository settings,
+  and the merge method it names must be allowed there as well.
+  Leave it empty to merge the version bump PR yourself.
+- Auto-merge waits only for the merge requirements the base branch defines,
+  so set it up on a base branch that requires status checks or reviews.
+  With nothing left to wait for, the action merges the PR right away instead of arming it.
+- Enable auto-merge with a GitHub App installation token,
+  as in [Example with a GitHub App Token](#example-with-a-github-app-token).
+  With the default `${{ github.token }}`, the workflows on the version bump PR wait for approval,
+  so its required checks do not pass unattended, and a merge performed by `GITHUB_TOKEN`
+  does not trigger the run that creates the tag.
 
 ### Outputs
 
@@ -293,6 +306,8 @@ For more details, refer to the official [bump-my-version documentation](https://
 4. Creates a new branch and PR for the version bump
    - If the version is updated, a new branch (`${branch-prefix}/bump-version-from-X.Y.W-to-X.Y.Z`) is created.
    - A PR is automatically opened to merge the version bump.
+   - If `auto-merge` names a merge method, auto-merge is enabled on that PR,
+     or the PR is merged right away when nothing blocks it.
 
 5. After merging, creates a Git tag
    - The branch name is parsed to extract the new version number.
