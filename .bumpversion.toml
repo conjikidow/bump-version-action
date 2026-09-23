@@ -1,5 +1,7 @@
 [tool.bumpversion]
 current_version = "4.2.0"
+commit = false
+tag = false
 
 [[tool.bumpversion.files]]
 filename = "README.md"
