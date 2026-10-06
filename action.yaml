@@ -1,6 +1,10 @@
-name: 'Bump Version Action'
+name: Bump Version Action
 description: 'Bump versions based on PR labels'
-author: 'conjikidow'
+author: conjikidow
+
+branding:
+  icon: chevrons-up
+  color: green
 
 inputs:
   version-of-bump-my-version:
@@ -10,15 +14,15 @@ inputs:
   label-major:
     description: 'Label that triggers a major version bump.'
     required: false
-    default: 'major'
+    default: major
   label-minor:
     description: 'Label that triggers a minor version bump.'
     required: false
-    default: 'minor'
+    default: minor
   label-patch:
     description: 'Label that triggers a patch version bump.'
     required: false
-    default: 'patch'
+    default: patch
   manual-bump-type:
     description: 'Bump type used for manual workflow dispatch runs: `major`, `minor`, or `patch`.'
     required: false
@@ -26,7 +30,7 @@ inputs:
   branch-prefix:
     description: 'Prefix of the version bump branch name.'
     required: false
-    default: 'workflow'
+    default: workflow
   labels-to-add:
     description: 'Labels to add to the version bump PR, separated by commas.'
     required: false
@@ -40,15 +44,16 @@ inputs:
   update-major-minor-tags:
     description: 'Whether to create or update the major (`vX`) and minor (`vX.Y`) tags to point to the new release.'
     required: false
-    default: 'false'
+    default: false
   create-release:
     description: 'Whether to create a GitHub Release for the new tag.'
     required: false
-    default: 'false'
+    default: false
   github-token:
     description: 'Token used to authenticate with GitHub. Needs `contents: write` and `pull-requests: write`.'
     required: false
     default: ${{ github.token }}
+
 outputs:
   version-bumped:
     description: '`true` when the version was bumped and a new tag was created; otherwise `false`.'
@@ -64,7 +69,8 @@ outputs:
     value: ${{ steps.set-outputs.outputs.pull-request-url }}
 
 runs:
-  using: 'composite'
+  using: composite
+
   steps:
     - name: Check execution conditions
       shell: bash
@@ -103,8 +109,8 @@ runs:
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
     - name: Determine bump type
-      if: env.SKIP_JOB != 'true'
       id: bump-type
+      if: env.SKIP_JOB != 'true'
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
@@ -121,8 +127,8 @@ runs:
       uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
     - name: Run bump script
-      if: env.SKIP_JOB != 'true' && steps.bump-type.outputs.type != 'none'
       id: bump-version
+      if: env.SKIP_JOB != 'true' && steps.bump-type.outputs.type != 'none'
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
@@ -135,8 +141,8 @@ runs:
       run: bash "${{ github.action_path }}/src/bump-version.sh"
 
     - name: Create tag
-      if: env.SKIP_JOB != 'true' && github.event_name == 'pull_request' && github.event.pull_request.merged == true
       id: create-tag
+      if: env.SKIP_JOB != 'true' && github.event_name == 'pull_request' && github.event.pull_request.merged == true
       shell: bash
       env:
         PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
@@ -161,8 +167,8 @@ runs:
       run: bash "${{ github.action_path }}/src/create-release.sh"
 
     - name: Set outputs
-      if: env.SKIP_JOB != 'true'
       id: set-outputs
+      if: env.SKIP_JOB != 'true'
       shell: bash
       env:
         VERSION_BUMPED: ${{ steps.create-tag.outputs.version-bumped }}
@@ -174,7 +180,3 @@ runs:
         echo "new-version=${NEW_VERSION:-}" >> "${GITHUB_OUTPUT}"
         echo "pull-request-number=${PULL_REQUEST_NUMBER:-}" >> "${GITHUB_OUTPUT}"
         echo "pull-request-url=${PULL_REQUEST_URL:-}" >> "${GITHUB_OUTPUT}"
-
-branding:
-  icon: 'chevrons-up'
-  color: 'green'
