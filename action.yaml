@@ -72,29 +72,31 @@ runs:
   using: composite
 
   steps:
-    - name: Check execution conditions
+    - name: Determine whether to run
       shell: bash
+      env:
+        PR_MERGED: ${{ github.event.pull_request.merged }}
       run: |
-        if [[ "${{ github.event_name }}" == 'workflow_dispatch' ]]; then
+        if [[ "${GITHUB_EVENT_NAME}" == 'workflow_dispatch' ]]; then
           echo 'Manual workflow dispatch detected.'
           exit 0
         fi
 
-        if [[ "${{ github.event_name }}" == 'pull_request' && \
-              "${{ github.event.pull_request.merged }}" == 'true' ]]; then
+        if [[ "${GITHUB_EVENT_NAME}" == 'pull_request' && \
+              "${PR_MERGED}" == 'true' ]]; then
           echo 'Merged pull request detected.'
           exit 0
         fi
 
-        if [[ "${{ github.event_name }}" == 'pull_request' ]]; then
+        if [[ "${GITHUB_EVENT_NAME}" == 'pull_request' ]]; then
           echo 'Skipping job because the pull request is not merged.'
         else
-          echo "Skipping job because the event is unsupported: ${{ github.event_name }}"
+          echo "Skipping job because the event is unsupported: ${GITHUB_EVENT_NAME}"
         fi
 
         echo 'SKIP_JOB=true' >> "${GITHUB_ENV}"
 
-    - name: Checkout repository
+    - name: Checkout the main repository
       if: env.SKIP_JOB != 'true'
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
@@ -120,15 +122,19 @@ runs:
         LABEL_MINOR: ${{ inputs.label-minor }}
         LABEL_PATCH: ${{ inputs.label-patch }}
         MANUAL_BUMP_TYPE: ${{ inputs.manual-bump-type }}
-      run: bash "${{ github.action_path }}/src/determine-bump-type.sh"
+      run: bash "${GITHUB_ACTION_PATH}/src/determine-bump-type.sh"
 
     - name: Install uv
-      if: env.SKIP_JOB != 'true' && steps.bump-type.outputs.type != 'none'
+      if: >-
+        env.SKIP_JOB != 'true'
+        && steps.bump-type.outputs.type != 'none'
       uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
-    - name: Run bump script
+    - name: Bump version
       id: bump-version
-      if: env.SKIP_JOB != 'true' && steps.bump-type.outputs.type != 'none'
+      if: >-
+        env.SKIP_JOB != 'true'
+        && steps.bump-type.outputs.type != 'none'
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
@@ -138,33 +144,36 @@ runs:
         AUTO_MERGE: ${{ inputs.auto-merge }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
         BUMP_TYPE: ${{ steps.bump-type.outputs.type }}
-      run: bash "${{ github.action_path }}/src/bump-version.sh"
+      run: bash "${GITHUB_ACTION_PATH}/src/bump-version.sh"
 
     - name: Create tag
       id: create-tag
-      if: env.SKIP_JOB != 'true' && github.event_name == 'pull_request' && github.event.pull_request.merged == true
+      if: >-
+        env.SKIP_JOB != 'true'
+        && github.event_name == 'pull_request'
+        && github.event.pull_request.merged == true
       shell: bash
       env:
         PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
         PR_MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
         UPDATE_MAJOR_MINOR_TAGS: ${{ inputs.update-major-minor-tags }}
-      run: bash "${{ github.action_path }}/src/create-tag.sh"
+      run: bash "${GITHUB_ACTION_PATH}/src/create-tag.sh"
 
-    - name: Create GitHub Release
+    - name: Create GitHub release
       if: >-
-        env.SKIP_JOB != 'true' &&
-        github.event_name == 'pull_request' &&
-        github.event.pull_request.merged == true &&
-        inputs.create-release == 'true' &&
-        steps.create-tag.outputs.version-bumped == 'true'
+        env.SKIP_JOB != 'true'
+        && github.event_name == 'pull_request'
+        && github.event.pull_request.merged == true
+        && inputs.create-release == 'true'
+        && steps.create-tag.outputs.version-bumped == 'true'
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
         GH_REPO: ${{ github.repository }}
         PR_MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         NEW_VERSION: ${{ steps.create-tag.outputs.new-version }}
-      run: bash "${{ github.action_path }}/src/create-release.sh"
+      run: bash "${GITHUB_ACTION_PATH}/src/create-release.sh"
 
     - name: Set outputs
       id: set-outputs
