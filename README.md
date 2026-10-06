@@ -33,17 +33,18 @@ You can save them in a file such as `.github/workflows/bump-version.yaml`.
 
 Make sure your workflow includes the following:
 
-- The `on: pull_request: types: [closed]` trigger to run the workflow whenever a PR is closed.
+- The `pull_request` trigger with the `closed` type to run the workflow whenever a PR is closed.
 - The job-level `if` condition to skip PRs that are closed without being merged.
 
 #### Basic Example
 
 ```yaml
-name: Bump Version
+name: Bump version
 
 on:
   pull_request:
-    types: [closed]
+    types:
+      - closed
 
 jobs:
   bump-version:
@@ -52,15 +53,16 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+
     steps:
-      - name: Bump Version
+      - name: Bump version
         uses: conjikidow/bump-version-action@v4.2.0
         with:
-          label-major: 'major update'
-          label-minor: 'minor update'
-          label-patch: 'patch update'
-          labels-to-add: 'automated,version-bump'
-          create-release: 'true'
+          label-major: major update
+          label-minor: minor update
+          label-patch: patch update
+          labels-to-add: automated,version-bump
+          create-release: true
 ```
 
 The examples reference actions by tag for readability.
@@ -79,33 +81,37 @@ The following example generates a GitHub App installation token and passes it to
 so that the workflows triggered by the version bump PR run without approval.
 
 ```yaml
-name: Bump Version
+name: Bump version
 
 on:
   pull_request:
-    types: [closed]
+    types:
+      - closed
 
 jobs:
   bump-version:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions: {}
+
     steps:
-      - uses: actions/create-github-app-token@v3
+      - name: Generate GitHub App token
         id: app-token
+        uses: actions/create-github-app-token@v3
         with:
           client-id: ${{ vars.GH_APP_CLIENT_ID }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
           permission-contents: write
           permission-pull-requests: write
-      - name: Bump Version
+
+      - name: Bump version
         uses: conjikidow/bump-version-action@v4.2.0
         with:
-          label-major: 'major update'
-          label-minor: 'minor update'
-          label-patch: 'patch update'
-          labels-to-add: 'automated,version-bump'
-          create-release: 'true'
+          label-major: major update
+          label-minor: minor update
+          label-patch: patch update
+          labels-to-add: automated,version-bump
+          create-release: true
           github-token: ${{ steps.app-token.outputs.token }}
 ```
 
@@ -115,14 +121,15 @@ You can also use this action with manual workflow dispatch.
 The following example adds a manual trigger that lets you choose the bump type when starting the workflow.
 
 ```yaml
-name: Bump Version
+name: Bump version
 
 on:
   pull_request:
-    types: [closed]
+    types:
+      - closed
   workflow_dispatch:
     inputs:
-      bump_type:
+      bump-type:
         description: 'Version bump type'
         required: true
         type: choice
@@ -133,21 +140,24 @@ on:
 
 jobs:
   bump-version:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
+
     steps:
-      - name: Bump Version
+      - name: Bump version
         uses: conjikidow/bump-version-action@v4.2.0
         with:
-          label-major: 'major update'
-          label-minor: 'minor update'
-          label-patch: 'patch update'
-          manual-bump-type: ${{ inputs.bump_type }}
-          labels-to-add: 'automated,version-bump'
-          create-release: 'true'
+          label-major: major update
+          label-minor: minor update
+          label-patch: patch update
+          manual-bump-type: ${{ inputs.bump-type }}
+          labels-to-add: automated,version-bump
+          create-release: true
 ```
 
 #### Example with External Release Tools
@@ -157,11 +167,12 @@ The following example uses [`softprops/action-gh-release`](https://github.com/so
 to create a GitHub Release when the version has actually been bumped:
 
 ```yaml
-name: Bump Version with External Release
+name: Bump version with external release
 
 on:
   pull_request:
-    types: [closed]
+    types:
+      - closed
 
 jobs:
   bump-version:
@@ -170,21 +181,22 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+
     steps:
-      - name: Bump Version
+      - name: Bump version
         id: bump-version
         uses: conjikidow/bump-version-action@v4.2.0
 
       # This step is just a placeholder. You can replace it with your own script or external tools.
-      - name: Create Release Notes
+      - name: Create release notes
         if: steps.bump-version.outputs.version-bumped == 'true'
         run: |
-            cat <<EOF > custom-release-notes.md
-            ## What's Changed
-            ...
-            EOF
+          cat <<EOF > custom-release-notes.md
+          ## What's Changed
+          ...
+          EOF
 
-      - name: Create GitHub Release
+      - name: Create GitHub release
         if: steps.bump-version.outputs.version-bumped == 'true'
         uses: softprops/action-gh-release@v2
         with:
@@ -216,15 +228,15 @@ which is why that example zeroes it with `permissions: {}`.
 | Name                         | Description                                                                                    | Required | Default               |
 | ---------------------------- | ---------------------------------------------------------------------------------------------- | -------- | --------------------- |
 | `version-of-bump-my-version` | Version of `bump-my-version` to use.                                                           | No       | `'latest'`            |
-| `label-major`                | Label that triggers a major version bump.                                                      | No       | `'major'`             |
-| `label-minor`                | Label that triggers a minor version bump.                                                      | No       | `'minor'`             |
-| `label-patch`                | Label that triggers a patch version bump.                                                      | No       | `'patch'`             |
+| `label-major`                | Label that triggers a major version bump.                                                      | No       | `major`               |
+| `label-minor`                | Label that triggers a minor version bump.                                                      | No       | `minor`               |
+| `label-patch`                | Label that triggers a patch version bump.                                                      | No       | `patch`               |
 | `manual-bump-type`           | Bump type used for manual workflow dispatch runs: `major`, `minor`, or `patch`.                | No       | `''`                  |
-| `branch-prefix`              | Prefix of the version bump branch name.                                                        | No       | `'workflow'`          |
+| `branch-prefix`              | Prefix of the version bump branch name.                                                        | No       | `workflow`            |
 | `labels-to-add`              | Labels to add to the version bump PR, separated by commas.                                     | No       | `''`                  |
 | `auto-merge`                 | Merge method used to enable auto-merge on the version bump PR: `merge`, `squash`, or `rebase`. | No       | `''`                  |
-| `update-major-minor-tags`    | Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.                          | No       | `'false'`             |
-| `create-release`             | Whether to create a GitHub Release for the new tag.                                            | No       | `'false'`             |
+| `update-major-minor-tags`    | Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.                          | No       | `false`               |
+| `create-release`             | Whether to create a GitHub Release for the new tag.                                            | No       | `false`               |
 | `github-token`               | Token used to authenticate with GitHub.                                                        | No       | `${{ github.token }}` |
 
 - Set any of `label-major`, `label-minor`, or `label-patch` to an empty string (`''`) to disable that bump type.
@@ -289,7 +301,7 @@ For more details, refer to the official [bump-my-version documentation](https://
 
 ## How It Works
 
-1. Checks the execution conditions
+1. Determines whether to run
    - Runs for merged PRs and manual workflow dispatches.
    - For other cases, the action skips execution.
 
@@ -330,7 +342,7 @@ This action's default behavior is designed to be compatible with that setting.
 
 #### Enabling Major and Minor Tag Updates
 
-If `update-major-minor-tags` is set to `'true'`, the action also creates or updates
+If `update-major-minor-tags` is set to `true`, the action also creates or updates
 the major (`vX`) and minor (`vX.Y`) tags based on the following rules:
 
 - If `vX.Y` exists → update to `vX.Y.Z`.
