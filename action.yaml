@@ -140,9 +140,9 @@ runs:
         GH_TOKEN: ${{ inputs.github-token }}
         GH_REPO: ${{ github.repository }}
         VERSION_OF_BUMP_MY_VERSION: ${{ inputs.version-of-bump-my-version }}
+        BRANCH_PREFIX: ${{ inputs.branch-prefix }}
         LABELS_TO_ADD: ${{ inputs.labels-to-add }}
         AUTO_MERGE: ${{ inputs.auto-merge }}
-        BRANCH_PREFIX: ${{ inputs.branch-prefix }}
         BUMP_TYPE: ${{ steps.bump-type.outputs.type }}
       run: bash "${GITHUB_ACTION_PATH}/src/bump-version.sh"
 
@@ -180,10 +180,10 @@ runs:
       if: env.SKIP_JOB != 'true'
       shell: bash
       env:
-        VERSION_BUMPED: ${{ steps.create-tag.outputs.version-bumped }}
-        NEW_VERSION: ${{ steps.create-tag.outputs.new-version }}
         PULL_REQUEST_NUMBER: ${{ steps.bump-version.outputs.pull-request-number }}
         PULL_REQUEST_URL: ${{ steps.bump-version.outputs.pull-request-url }}
+        VERSION_BUMPED: ${{ steps.create-tag.outputs.version-bumped }}
+        NEW_VERSION: ${{ steps.create-tag.outputs.new-version }}
       run: |
         echo "version-bumped=${VERSION_BUMPED:-false}" >> "${GITHUB_OUTPUT}"
         echo "new-version=${NEW_VERSION:-}" >> "${GITHUB_OUTPUT}"
