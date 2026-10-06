@@ -20,7 +20,7 @@ incrementing the version number based on the labels applied to the PR.
 - Creates a new branch and a PR for the version bump.
   - Optionally enables auto-merge on that PR.
 - Generates a corresponding Git tag once the version bump PR is merged.
-- Optionally creates a GitHub Release for the new tag.
+- Optionally creates a GitHub release for the new tag.
 
 ## Usage
 
@@ -164,7 +164,7 @@ jobs:
 
 You can also integrate this action with external tools or actions by using the outputs provided.
 The following example uses [`softprops/action-gh-release`](https://github.com/softprops/action-gh-release)
-to create a GitHub Release when the version has actually been bumped:
+to create a GitHub release when the version has actually been bumped:
 
 ```yaml
 name: Bump version with external release
@@ -236,7 +236,7 @@ which is why that example zeroes it with `permissions: {}`.
 | `labels-to-add`              | Labels to add to the version bump PR, separated by commas.                                     | No       | `''`                  |
 | `auto-merge`                 | Merge method used to enable auto-merge on the version bump PR: `merge`, `squash`, or `rebase`. | No       | `''`                  |
 | `update-major-minor-tags`    | Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.                          | No       | `false`               |
-| `create-release`             | Whether to create a GitHub Release for the new tag.                                            | No       | `false`               |
+| `create-release`             | Whether to create a GitHub release for the new tag.                                            | No       | `false`               |
 | `github-token`               | Token used to authenticate with GitHub.                                                        | No       | `${{ github.token }}` |
 
 - Set any of `label-major`, `label-minor`, or `label-patch` to an empty string (`''`) to disable that bump type.
@@ -325,14 +325,14 @@ For more details, refer to the official [bump-my-version documentation](https://
    - The branch name is parsed to extract the new version number.
    - A Git tag (`vX.Y.Z`) is pushed to mark the new release.
 
-6. Optionally creates a GitHub Release
-   - If `create-release` is `true`, a GitHub Release is created for the new tag
+6. Optionally creates a GitHub release
+   - If `create-release` is `true`, a GitHub release is created for the new tag
      with automatically generated release notes.
 
 ### Tag Management
 
 By default, this action only creates the full version tag (`vX.Y.Z`), which is never overwritten on subsequent releases.
-This default is compatible with GitHub's [Immutable Releases](https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases)
+This default is compatible with GitHub's [immutable releases](https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases)
 setting and aligns with the recommendation to pin actions to specific versions
 (ideally to a commit SHA) for supply chain security.
 

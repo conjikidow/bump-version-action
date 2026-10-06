@@ -46,7 +46,7 @@ inputs:
     required: false
     default: false
   create-release:
-    description: 'Whether to create a GitHub Release for the new tag.'
+    description: 'Whether to create a GitHub release for the new tag.'
     required: false
     default: false
   github-token:
