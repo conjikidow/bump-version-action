@@ -225,19 +225,19 @@ which is why that example zeroes it with `permissions: {}`.
 
 ### Inputs
 
-| Name                         | Description                                                                                    | Required | Default               |
-| ---------------------------- | ---------------------------------------------------------------------------------------------- | -------- | --------------------- |
-| `version-of-bump-my-version` | Version of `bump-my-version` to use.                                                           | No       | `'latest'`            |
-| `label-major`                | Label that triggers a major version bump.                                                      | No       | `major`               |
-| `label-minor`                | Label that triggers a minor version bump.                                                      | No       | `minor`               |
-| `label-patch`                | Label that triggers a patch version bump.                                                      | No       | `patch`               |
-| `manual-bump-type`           | Bump type used for manual workflow dispatch runs: `major`, `minor`, or `patch`.                | No       | `''`                  |
-| `branch-prefix`              | Prefix of the version bump branch name.                                                        | No       | `workflow`            |
-| `labels-to-add`              | Labels to add to the version bump PR, separated by commas.                                     | No       | `''`                  |
-| `auto-merge`                 | Merge method used to enable auto-merge on the version bump PR: `merge`, `squash`, or `rebase`. | No       | `''`                  |
-| `update-major-minor-tags`    | Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.                          | No       | `false`               |
-| `create-release`             | Whether to create a GitHub release for the new tag.                                            | No       | `false`               |
-| `github-token`               | Token used to authenticate with GitHub.                                                        | No       | `${{ github.token }}` |
+| Name                         | Description                                                                                                               | Required | Default               |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------- |
+| `version-of-bump-my-version` | Version of `bump-my-version` to use.                                                                                      | No       | `'latest'`            |
+| `label-major`                | Label that triggers a major version bump.                                                                                 | No       | `major`               |
+| `label-minor`                | Label that triggers a minor version bump.                                                                                 | No       | `minor`               |
+| `label-patch`                | Label that triggers a patch version bump.                                                                                 | No       | `patch`               |
+| `manual-bump-type`           | Bump type used for manual workflow dispatch runs: `major`, `minor`, or `patch`.                                           | No       | `''`                  |
+| `branch-prefix`              | Prefix of the version bump branch name.                                                                                   | No       | `workflow`            |
+| `labels-to-add`              | Labels to add to the version bump PR, separated by commas.                                                                | No       | `''`                  |
+| `auto-merge`                 | Merge method used to enable auto-merge on the version bump PR: `merge`, `squash`, or `rebase`. Empty disables auto-merge. | No       | `''`                  |
+| `update-major-minor-tags`    | Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.                                                     | No       | `false`               |
+| `create-release`             | Whether to create a GitHub release for the new tag.                                                                       | No       | `false`               |
+| `github-token`               | Token used to authenticate with GitHub. Needs `contents: write` and `pull-requests: write`.                               | No       | `${{ github.token }}` |
 
 - Set any of `label-major`, `label-minor`, or `label-patch` to an empty string (`''`) to disable that bump type.
 - `manual-bump-type` is required for `workflow_dispatch` runs; the action fails when it is empty.
