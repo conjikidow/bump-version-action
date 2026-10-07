@@ -42,7 +42,7 @@ inputs:
     required: false
     default: ''
   update-major-minor-tags:
-    description: 'Whether to create or update the major (`vX`) and minor (`vX.Y`) tags to point to the new release.'
+    description: 'Whether to create or update the major (`vX`) and minor (`vX.Y`) tags.'
     required: false
     default: false
   create-release:
