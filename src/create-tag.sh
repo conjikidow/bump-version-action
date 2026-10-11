@@ -47,8 +47,8 @@ if [[ ${UPDATE_MAJOR_MINOR_TAGS:-false} == 'true' ]]; then
 
   if [[ -n ${existing_major_tag} ]]; then
     echo "Updating major tag: v${new_major_version}"
-    git tag -f "v${new_major_version}" "${PR_MERGE_COMMIT_SHA}"
-    git push -f origin "v${new_major_version}"
+    git tag --force "v${new_major_version}" "${PR_MERGE_COMMIT_SHA}"
+    git push --force origin "v${new_major_version}"
   elif [[ -n ${existing_previous_major_tag} ]]; then
     echo "Creating new major tag: v${new_major_version} (previous major v${previous_major_version} exists)"
     git tag "v${new_major_version}" "${PR_MERGE_COMMIT_SHA}"
@@ -57,8 +57,8 @@ if [[ ${UPDATE_MAJOR_MINOR_TAGS:-false} == 'true' ]]; then
 
   if [[ -n ${existing_minor_tag} ]]; then
     echo "Updating minor tag: v${new_minor_version}"
-    git tag -f "v${new_minor_version}" "${PR_MERGE_COMMIT_SHA}"
-    git push -f origin "v${new_minor_version}"
+    git tag --force "v${new_minor_version}" "${PR_MERGE_COMMIT_SHA}"
+    git push --force origin "v${new_minor_version}"
   elif [[ -n ${existing_previous_minor_tag} ]]; then
     echo "Creating new minor tag: v${new_minor_version} (previous minor v${previous_minor_version} exists)"
     git tag "v${new_minor_version}" "${PR_MERGE_COMMIT_SHA}"
