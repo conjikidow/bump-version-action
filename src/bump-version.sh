@@ -45,7 +45,7 @@ base_branch="$(git branch --show-current)"
 # Create a new branch for the version bump
 new_branch="${BRANCH_PREFIX}/bump-version-from-${previous_version}-to-${current_version}"
 echo "Creating new branch: ${new_branch}"
-git checkout -b "${new_branch}"
+git switch --create "${new_branch}"
 
 # Commit the version bump changes
 git add .
