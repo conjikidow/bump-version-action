@@ -293,7 +293,7 @@ replace = "VERSION {new_version}"
 
 To generate a default configuration file, run the following command:
 
-```console
+```sh
 uvx bump-my-version sample-config --no-prompt --destination .bumpversion.toml
 ```
 
