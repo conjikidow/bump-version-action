@@ -210,7 +210,7 @@ The token passed to `github-token` needs `contents: write` to push the version b
 and `pull-requests: write` to open the version bump PR and, with `auto-merge`, to merge it.
 
 The default `${{ github.token }}` carries whatever the workflow grants it,
-so grant those scopes in the job, as the examples that keep it do.
+so grant those scopes in the job as the examples that keep it do.
 `GITHUB_TOKEN` also needs the repository itself to allow it to open PRs:
 
 1. Go to the **Settings** tab of your repository.
@@ -336,8 +336,8 @@ This default is compatible with GitHub's [immutable releases](https://docs.githu
 setting and aligns with the recommendation to pin actions to specific versions
 (ideally to a commit SHA) for supply chain security.
 
-True immutability of tags and releases requires enabling **Enable release immutability**
-in your repository's **Settings → General → Releases**.
+For true immutability of tags and releases,
+turn on **Enable release immutability** under your repository's **Settings → General → Releases**.
 This action's default behavior is designed to be compatible with that setting.
 
 #### Enabling Major and Minor Tag Updates
@@ -346,9 +346,9 @@ If `update-major-minor-tags` is set to `true`, the action also creates or update
 the major (`vX`) and minor (`vX.Y`) tags based on the following rules:
 
 - If `vX.Y` exists → update to `vX.Y.Z`.
-- If `vX.Y` does not exist but a previous minor tag (`vX.Y` before the update) exists → create `vX.Y` and set it to `vX.Y.Z`.
+- If `vX.Y` does not exist but the previous version's minor tag exists → create `vX.Y` and set it to `vX.Y.Z`.
 - If `vX` exists → update to `vX.Y.Z`.
-- If `vX` does not exist but a previous major tag (`vX` before the update) exists → create `vX` and set it to `vX.Y.Z`.
+- If `vX` does not exist but the previous version's major tag exists → create `vX` and set it to `vX.Y.Z`.
 - If neither `vX` nor `vX.Y` exist, they are not created.
 
 Examples:
