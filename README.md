@@ -66,8 +66,7 @@ jobs:
 ```
 
 The examples reference actions by tag for readability.
-For production workflows, consider pinning each action to a full-length commit SHA,
-as [GitHub recommends](https://docs.github.com/en/actions/reference/security/secure-use#using-third-party-actions).
+For production workflows, consider pinning each action to a full-length commit SHA, as [GitHub recommends](https://docs.github.com/en/actions/reference/security/secure-use#using-third-party-actions).
 Releases of this action are immutable, so its full version tags (`vX.Y.Z`) are already locked to a single commit.
 
 > [!IMPORTANT]
@@ -163,8 +162,8 @@ jobs:
 #### Example with External Release Tools
 
 You can also integrate this action with external tools or actions by using the outputs provided.
-The following example uses [`softprops/action-gh-release`](https://github.com/softprops/action-gh-release)
-to create a GitHub release when the version has actually been bumped:
+The following example uses [`softprops/action-gh-release`](https://github.com/softprops/action-gh-release) to create a GitHub release
+when the version has actually been bumped:
 
 ```yaml
 name: Bump version with external release
@@ -248,11 +247,10 @@ which is why that example zeroes it with `permissions: {}`.
 - Auto-merge waits only for the merge requirements the base branch defines,
   so set it up on a base branch that requires status checks or reviews.
   With nothing left to wait for, the action merges the PR right away instead of arming it.
-- Enable auto-merge with a GitHub App installation token,
-  as in [Example with a GitHub App Token](#example-with-a-github-app-token).
+- Enable auto-merge with a GitHub App installation token, as in [Example with a GitHub App Token](#example-with-a-github-app-token).
   With the default `${{ github.token }}`, the workflows on the version bump PR wait for approval,
-  so its required checks do not pass unattended, and a merge performed by `GITHUB_TOKEN`
-  does not trigger the run that creates the tag.
+  so its required checks do not pass unattended,
+  and a merge performed by `GITHUB_TOKEN` does not trigger the run that creates the tag.
 
 ### Outputs
 
@@ -332,8 +330,8 @@ For more details, refer to the official [bump-my-version documentation](https://
 ### Tag Management
 
 By default, this action only creates the full version tag (`vX.Y.Z`), which is never overwritten on subsequent releases.
-This default is compatible with GitHub's [immutable releases](https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases)
-setting and aligns with the recommendation to pin actions to specific versions
+This default is compatible with GitHub's [immutable releases](https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases) setting
+and aligns with the recommendation to pin actions to specific versions
 (ideally to a commit SHA) for supply chain security.
 
 For true immutability of tags and releases,
@@ -342,8 +340,8 @@ This action's default behavior is designed to be compatible with that setting.
 
 #### Enabling Major and Minor Tag Updates
 
-If `update-major-minor-tags` is set to `true`, the action also creates or updates
-the major (`vX`) and minor (`vX.Y`) tags based on the following rules:
+If `update-major-minor-tags` is set to `true`,
+the action also creates or updates the major (`vX`) and minor (`vX.Y`) tags based on the following rules:
 
 - If `vX.Y` exists → update to `vX.Y.Z`.
 - If `vX.Y` does not exist but the previous version's minor tag exists → create `vX.Y` and set it to `vX.Y.Z`.
@@ -366,9 +364,8 @@ Examples:
 
 Licensed under either of [MIT license](LICENSE-MIT) or [Apache License, Version 2.0](LICENSE-APACHE) at your option.
 
-Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in this software
-by you, as defined in the Apache-2.0 license, shall be dually licensed as above,
-without any additional terms or conditions.
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in this software by you,
+as defined in the Apache-2.0 license, shall be dually licensed as above, without any additional terms or conditions.
 
 ## Contributing & Feedback
 
