@@ -45,25 +45,25 @@ base_branch="$(git branch --show-current)"
 # Create a new branch for the version bump
 new_branch="${BRANCH_PREFIX}/bump-version-from-${previous_version}-to-${current_version}"
 echo "Creating new branch: ${new_branch}"
-git switch --create "${new_branch}"
+git switch --create="${new_branch}"
 
 # Commit the version bump changes
 git add .
-git commit -m "chore(release): bump version from ${previous_version} to ${current_version}"
+git commit --message="chore(release): bump version from ${previous_version} to ${current_version}"
 
 # Push the new branch to the repository
 echo 'Pushing new branch to remote...'
-git push -f origin "${new_branch}"
+git push --force origin "${new_branch}"
 
 # Create a pull request for the version bump
 echo 'Creating pull request...'
 pr_create_error_file="$(mktemp)"
 trap 'rm -f "${pr_create_error_file}"' EXIT
-if ! pr_url="$(gh pr create --title "chore(release): bump version from ${previous_version} to ${current_version}" \
-  --body "This PR updates the version from ${previous_version} to ${current_version}." \
-  --base "${base_branch}" \
-  --head "${new_branch}" \
-  --label "${LABELS_TO_ADD}" 2>"${pr_create_error_file}")"; then
+if ! pr_url="$(gh pr create --base="${base_branch}" \
+  --head="${new_branch}" \
+  --title="chore(release): bump version from ${previous_version} to ${current_version}" \
+  --body="This PR updates the version from ${previous_version} to ${current_version}." \
+  --label="${LABELS_TO_ADD}" 2>"${pr_create_error_file}")"; then
   PR_OUTPUT="$(<"${pr_create_error_file}")"
   if echo "${PR_OUTPUT}" | grep -q 'GitHub Actions is not permitted to create or approve pull requests'; then
     log_error "Failed to create pull request due to insufficient permissions. Please ensure 'Allow GitHub Actions to create and approve pull requests' is enabled in your repository settings (Settings > Actions > General > Workflow permissions). Refer to the README for more details."
@@ -88,7 +88,7 @@ if [[ -n ${AUTO_MERGE} ]]; then
   merge_succeeded='false'
   attempt=1
   while [[ ${attempt} -le ${merge_attempts} ]]; do
-    if merge_output="$(gh pr merge --auto "--${AUTO_MERGE}" "${pr_url}" 2>&1)"; then
+    if merge_output="$(gh pr merge "${pr_url}" --auto "--${AUTO_MERGE}" 2>&1)"; then
       merge_succeeded='true'
       break
     fi
