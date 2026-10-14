@@ -111,7 +111,7 @@ runs:
         git config user.email 'github-actions[bot]@users.noreply.github.com'
 
     - name: Determine bump type
-      id: bump-type
+      id: determine-bump-type
       if: env.SKIP_JOB != 'true'
       shell: bash
       env:
@@ -127,7 +127,7 @@ runs:
     - name: Install uv
       if: >-
         env.SKIP_JOB != 'true'
-        && steps.bump-type.outputs.type != 'none'
+        && steps.determine-bump-type.outputs.type != 'none'
       uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
       with:
         version: '0.13.0'
@@ -137,7 +137,7 @@ runs:
       id: bump-version
       if: >-
         env.SKIP_JOB != 'true'
-        && steps.bump-type.outputs.type != 'none'
+        && steps.determine-bump-type.outputs.type != 'none'
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
@@ -146,7 +146,7 @@ runs:
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
         LABELS_TO_ADD: ${{ inputs.labels-to-add }}
         AUTO_MERGE: ${{ inputs.auto-merge }}
-        BUMP_TYPE: ${{ steps.bump-type.outputs.type }}
+        BUMP_TYPE: ${{ steps.determine-bump-type.outputs.type }}
       run: bash "${GITHUB_ACTION_PATH}/src/bump-version.sh"
 
     - name: Create tag
