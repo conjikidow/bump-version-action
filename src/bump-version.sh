@@ -16,22 +16,24 @@ validate_auto_merge() {
   esac
 }
 
+bump_my_version() {
+  uvx "bump-my-version@${VERSION_OF_BUMP_MY_VERSION}" "$@"
+}
+
 if ! validate_auto_merge "${AUTO_MERGE:-}"; then
   log_error "Invalid auto-merge value '${AUTO_MERGE}': expected 'merge', 'squash', or 'rebase' (leave empty to disable)."
   exit 1
 fi
 
-export BUMP_MY_VERSION="uvx bump-my-version@${VERSION_OF_BUMP_MY_VERSION}"
-
 # Get the current version before bumping
-previous_version="$(${BUMP_MY_VERSION} show-bump | head -1 | awk '{print $1}')"
+previous_version="$(bump_my_version show-bump | head -1 | awk '{print $1}')"
 echo "Current version: ${previous_version}"
 
 # Perform the version bump
-${BUMP_MY_VERSION} bump "${BUMP_TYPE}"
+bump_my_version bump "${BUMP_TYPE}"
 
 # Get the new version after bumping
-current_version="$(${BUMP_MY_VERSION} show-bump | head -1 | awk '{print $1}')"
+current_version="$(bump_my_version show-bump | head -1 | awk '{print $1}')"
 if [[ ${previous_version} == "${current_version}" ]]; then
   echo 'No version bump required.'
   exit 0
@@ -64,16 +66,16 @@ if ! pr_url="$(gh pr create --base="${base_branch}" \
   --title="chore(release): bump version from ${previous_version} to ${current_version}" \
   --body="This PR updates the version from ${previous_version} to ${current_version}." \
   --label="${LABELS_TO_ADD}" 2>"${pr_create_error_file}")"; then
-  PR_OUTPUT="$(<"${pr_create_error_file}")"
-  if echo "${PR_OUTPUT}" | grep -q 'GitHub Actions is not permitted to create or approve pull requests'; then
+  pr_create_error="$(<"${pr_create_error_file}")"
+  if echo "${pr_create_error}" | grep -q 'GitHub Actions is not permitted to create or approve pull requests'; then
     log_error "Failed to create pull request due to insufficient permissions. Please ensure 'Allow GitHub Actions to create and approve pull requests' is enabled in your repository settings (Settings > Actions > General > Workflow permissions). Refer to the README for more details."
     exit 1
   elif [[ -n ${pr_url} ]]; then
     log_warn "Pull request was created but adding labels to it failed: ${pr_url}"
-    echo "${PR_OUTPUT}" >&2
+    echo "${pr_create_error}" >&2
   else
     log_error 'Failed to create pull request.'
-    echo "${PR_OUTPUT}" >&2
+    echo "${pr_create_error}" >&2
     exit 1
   fi
 fi
@@ -95,7 +97,7 @@ if [[ -n ${AUTO_MERGE} ]]; then
     if [[ ${attempt} -lt ${merge_attempts} ]]; then
       sleep "$((attempt * 2))"
     fi
-    attempt=$((attempt + 1))
+    attempt="$((attempt + 1))"
   done
 
   if [[ ${merge_succeeded} == 'true' ]]; then
