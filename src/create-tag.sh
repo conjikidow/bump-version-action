@@ -12,7 +12,7 @@ if [[ -z ${branch_name} ]]; then
 fi
 
 # Verify if branch_name matches the expected pattern
-if ! [[ ${branch_name} =~ ^${BRANCH_PREFIX}/bump-version-from-[0-9]+\.[0-9]+\.[0-9]+-to-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+if [[ ! ${branch_name} =~ ^${BRANCH_PREFIX}/bump-version-from-[0-9]+\.[0-9]+\.[0-9]+-to-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   echo 'This branch does not match the expected pattern. Skipping.'
   write_output 'version-bumped' 'false'
   write_output 'new-version' ''
