@@ -39,7 +39,7 @@ fi
 
 # Fetch PR labels
 echo 'Fetching PR labels...'
-labels="$(gh api "/repos/{owner}/{repo}/pulls/${PR_NUMBER}" --jq='.labels.[].name' | tr '\n' ',' | sed 's/,$//')"
+labels="$(gh api "repos/{owner}/{repo}/pulls/${PR_NUMBER}" --jq='.labels.[].name' | tr '\n' ',' | sed 's/,$//')"
 echo "Found labels: ${labels}"
 
 # Return success if a non-empty label name is found inside ${labels}
