@@ -6,7 +6,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 branch_name="${PR_HEAD_REF}"
 
 # Ensure branch_name is not empty
-if [ -z "${branch_name}" ]; then
+if [[ -z ${branch_name} ]]; then
   log_error 'branch_name is not set.'
   exit 1
 fi
