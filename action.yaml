@@ -152,7 +152,7 @@ runs:
         PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
         PR_MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         BRANCH_PREFIX: ${{ inputs.branch-prefix }}
-        UPDATE_MAJOR_MINOR_TAGS: ${{ inputs.update-major-minor-tags }}
+        UPDATE_MAJOR_MINOR_TAGS: ${{ inputs.update-major-minor-tags == 'true' }}
       run: bash "${GITHUB_ACTION_PATH}/src/create-tag.sh"
 
     - name: Create GitHub release
