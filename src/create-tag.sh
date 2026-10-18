@@ -40,10 +40,10 @@ if [[ ${UPDATE_MAJOR_MINOR_TAGS:-false} == 'true' ]]; then
   all_tags="$(git ls-remote --tags origin)"
 
   # Check for existing tags in the fetched list
-  existing_previous_major_tag="$(echo "${all_tags}" | awk '{print $2}' | grep -E "^refs/tags/v${previous_major_version}$" || true)"
-  existing_previous_minor_tag="$(echo "${all_tags}" | awk '{print $2}' | grep -E "^refs/tags/v${previous_minor_version}$" || true)"
-  existing_major_tag="$(echo "${all_tags}" | awk '{print $2}' | grep -E "^refs/tags/v${new_major_version}$" || true)"
-  existing_minor_tag="$(echo "${all_tags}" | awk '{print $2}' | grep -E "^refs/tags/v${new_minor_version}$" || true)"
+  existing_previous_major_tag="$(echo "${all_tags}" | awk '{print $2}' | grep -xF -- "refs/tags/v${previous_major_version}" || true)"
+  existing_previous_minor_tag="$(echo "${all_tags}" | awk '{print $2}' | grep -xF -- "refs/tags/v${previous_minor_version}" || true)"
+  existing_major_tag="$(echo "${all_tags}" | awk '{print $2}' | grep -xF -- "refs/tags/v${new_major_version}" || true)"
+  existing_minor_tag="$(echo "${all_tags}" | awk '{print $2}' | grep -xF -- "refs/tags/v${new_minor_version}" || true)"
 
   if [[ -n ${existing_major_tag} ]]; then
     echo "Updating major tag: v${new_major_version}"
