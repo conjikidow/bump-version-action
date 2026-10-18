@@ -5,6 +5,11 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 require_cmd gh
 
+if [[ "${LABEL_MAJOR}${LABEL_MINOR}${LABEL_PATCH}" == *$'\n'* ]]; then
+  log_error 'label-major, label-minor, and label-patch must not contain a newline.'
+  exit 1
+fi
+
 validate_manual_bump_type() {
   case "$1" in
   major | minor | patch | '')
