@@ -72,6 +72,16 @@ runs:
   using: composite
 
   steps:
+    - name: Validate inputs
+      shell: bash
+      env:
+        LABEL_MAJOR: ${{ inputs.label-major }}
+        LABEL_MINOR: ${{ inputs.label-minor }}
+        LABEL_PATCH: ${{ inputs.label-patch }}
+        MANUAL_BUMP_TYPE: ${{ inputs.manual-bump-type }}
+        AUTO_MERGE: ${{ inputs.auto-merge }}
+      run: bash "${GITHUB_ACTION_PATH}/src/validate-inputs.sh"
+
     - name: Determine trigger type
       id: determine-trigger-type
       shell: bash
