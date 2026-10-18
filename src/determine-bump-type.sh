@@ -39,13 +39,13 @@ fi
 
 # Fetch PR labels
 echo 'Fetching PR labels...'
-labels="$(gh api "repos/{owner}/{repo}/pulls/${PR_NUMBER}" --jq='.labels.[].name' | tr '\n' ',' | sed 's/,$//')"
-echo "Found labels: ${labels}"
+labels="$(gh api "repos/{owner}/{repo}/pulls/${PR_NUMBER}" --jq='.labels.[].name')"
+echo "Found labels: ${labels//$'\n'/,}"
 
-# Return success if a non-empty label name is found inside ${labels}
+# Return success if a non-empty label name equals one of the lines in ${labels}
 has_label() {
   local needle="$1"
-  [[ -n ${needle} && ${labels} == *"${needle}"* ]]
+  [[ -n ${needle} ]] && grep -qxF -- "${needle}" <<<"${labels}"
 }
 
 # Determine bump type
