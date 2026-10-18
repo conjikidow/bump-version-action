@@ -5,25 +5,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 require_cmd gh
 
-validate_auto_merge() {
-  case "$1" in
-  merge | squash | rebase | '')
-    return 0
-    ;;
-  *)
-    return 1
-    ;;
-  esac
-}
-
 bump_my_version() {
   uvx "bump-my-version@${VERSION_OF_BUMP_MY_VERSION}" "$@"
 }
-
-if ! validate_auto_merge "${AUTO_MERGE:-}"; then
-  log_error "Invalid auto-merge value '${AUTO_MERGE}': expected 'merge', 'squash', or 'rebase' (leave empty to disable)."
-  exit 1
-fi
 
 # Get the current version before bumping
 previous_version="$(bump_my_version show-bump | head -1 | awk '{print $1}')"

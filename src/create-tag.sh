@@ -35,7 +35,7 @@ echo "Creating new tag: v${new_version}"
 git tag "v${new_version}" "${PR_MERGE_COMMIT_SHA}"
 git push origin "v${new_version}"
 
-if [[ ${UPDATE_MAJOR_MINOR_TAGS:-false} == 'true' ]]; then
+if [[ ${UPDATE_MAJOR_MINOR_TAGS} == 'true' ]]; then
   # Fetch all tags from the remote
   all_tags="$(git ls-remote --tags origin)"
 

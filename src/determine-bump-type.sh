@@ -5,33 +5,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 require_cmd gh
 
-if [[ "${LABEL_MAJOR}${LABEL_MINOR}${LABEL_PATCH}" == *$'\n'* ]]; then
-  log_error 'label-major, label-minor, and label-patch must not contain a newline.'
-  exit 1
-fi
-
-validate_manual_bump_type() {
-  case "$1" in
-  major | minor | patch | '')
-    return 0
-    ;;
-  *)
-    return 1
-    ;;
-  esac
-}
-
-if ! validate_manual_bump_type "${MANUAL_BUMP_TYPE:-}"; then
-  log_error "manual-bump-type must be one of 'major', 'minor', 'patch', or empty."
-  exit 1
-fi
-
 if [[ ${GITHUB_EVENT_NAME} == 'workflow_dispatch' ]]; then
-  if [[ -z ${MANUAL_BUMP_TYPE} ]]; then
-    log_error 'manual-bump-type is required for workflow_dispatch events.'
-    exit 1
-  fi
-
   echo "Using manual bump type: ${MANUAL_BUMP_TYPE}"
   write_output 'type' "${MANUAL_BUMP_TYPE}"
   exit 0
