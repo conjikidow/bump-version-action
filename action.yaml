@@ -80,6 +80,8 @@ runs:
         LABEL_PATCH: ${{ inputs.label-patch }}
         MANUAL_BUMP_TYPE: ${{ inputs.manual-bump-type }}
         AUTO_MERGE: ${{ inputs.auto-merge }}
+        UPDATE_MAJOR_MINOR_TAGS: ${{ inputs.update-major-minor-tags }}
+        CREATE_RELEASE: ${{ inputs.create-release }}
       run: bash "${GITHUB_ACTION_PATH}/src/validate-inputs.sh"
 
     - name: Determine trigger type
