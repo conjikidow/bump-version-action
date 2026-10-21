@@ -8,7 +8,7 @@
 
 A GitHub Action to bump versions based on pull request (PR) labels.
 
-This action follows the principles of [semantic versioning](https://semver.org),
+This action follows the principles of [Semantic Versioning](https://semver.org),
 incrementing the version number based on the labels applied to the PR.
 
 ## Features
@@ -16,7 +16,7 @@ incrementing the version number based on the labels applied to the PR.
 - Automatically determines the version bump type based on PR labels.
 - Supports manual workflow dispatch with an explicitly selected bump type.
 - Uses [bump-my-version](https://github.com/callowayproject/bump-my-version)
-  to increment the version according to semantic versioning.
+  to increment the version according to Semantic Versioning.
 - Creates a new branch and a PR for the version bump.
   - Optionally enables auto-merge on that PR.
 - Generates a corresponding Git tag once the version bump PR is merged.
@@ -306,7 +306,7 @@ For more details, refer to the official [bump-my-version documentation](https://
 2. Determines the bump type
    - For manual workflow dispatches, uses `manual-bump-type`.
    - Otherwise, extracts PR labels and determines whether a major, minor, or patch bump is required,
-     in accordance with semantic versioning.
+     in accordance with Semantic Versioning.
    - If no matching labels are found, the process stops.
 
 3. Runs `bump-my-version` to bump the version
