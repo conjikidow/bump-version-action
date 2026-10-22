@@ -7,5 +7,9 @@ reflow = true
 reflow-mode = "semantic-line-breaks"
 reflow-length-exemptions = true
 
+[MD044]
+names = ["Git", "GitHub", "Semantic Versioning"]
+whole-words = true
+
 [MD060]
 style = "aligned"
