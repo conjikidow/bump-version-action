@@ -190,7 +190,7 @@ jobs:
       - name: Create release notes
         if: steps.bump-version.outputs.version-bumped == 'true'
         run: |
-          cat <<EOF > custom-release-notes.md
+          cat << EOF > custom-release-notes.md
           ## What's Changed
           ...
           EOF
