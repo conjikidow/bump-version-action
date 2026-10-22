@@ -24,7 +24,7 @@ echo "Found labels: ${labels//$'\n'/,}"
 # Return success if a non-empty label name equals one of the lines in ${labels}
 has_label() {
   local needle="$1"
-  [[ -n ${needle} ]] && grep -qxF -- "${needle}" <<<"${labels}"
+  [[ -n ${needle} ]] && grep -qxF -- "${needle}" <<< "${labels}"
 }
 
 # Determine bump type
