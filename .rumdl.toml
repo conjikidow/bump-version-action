@@ -8,7 +8,7 @@ reflow-mode = "semantic-line-breaks"
 reflow-length-exemptions = true
 
 [MD044]
-names = ["Git", "GitHub", "Semantic Versioning"]
+names = ["Git", "GitHub", "GitHub-hosted", "Semantic Versioning"]
 whole-words = true
 
 [MD060]
