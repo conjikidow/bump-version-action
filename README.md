@@ -15,7 +15,7 @@ incrementing the version number based on the labels applied to the PR.
 
 - Automatically determines the version bump type based on PR labels.
 - Supports manual workflow dispatch with an explicitly selected bump type.
-- Uses [bump-my-version](https://github.com/callowayproject/bump-my-version)
+- Uses [`bump-my-version`](https://github.com/callowayproject/bump-my-version)
   to increment the version according to Semantic Versioning.
 - Creates a new branch and a PR for the version bump.
   - Optionally enables auto-merge on that PR.
@@ -264,7 +264,7 @@ which is why that example zeroes it with `permissions: {}`.
 The `pull-request-*` outputs are set in the run that opens the version bump PR,
 while `version-bumped` becomes `true` only in the later run triggered by merging it.
 
-### bump-my-version Configuration
+### `bump-my-version` Configuration
 
 To use this action, ensure that your project is configured to work with `bump-my-version`.
 Below is an example `.bumpversion.toml` configuration file:
@@ -295,7 +295,7 @@ To generate a default configuration file, run the following command:
 uvx bump-my-version sample-config --no-prompt --destination .bumpversion.toml
 ```
 
-For more details, refer to the official [bump-my-version documentation](https://callowayproject.github.io/bump-my-version/reference/configuration).
+For more details, refer to the official [`bump-my-version` documentation](https://callowayproject.github.io/bump-my-version/reference/configuration).
 
 ## How It Works
 
