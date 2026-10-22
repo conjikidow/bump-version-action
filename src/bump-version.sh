@@ -49,8 +49,8 @@ if ! pr_url="$(gh pr create --base="${base_branch}" \
   --head="${new_branch}" \
   --title="chore(release): bump version from ${previous_version} to ${current_version}" \
   --body="This PR updates the version from ${previous_version} to ${current_version}." \
-  --label="${LABELS_TO_ADD}" 2>"${pr_create_error_file}")"; then
-  pr_create_error="$(<"${pr_create_error_file}")"
+  --label="${LABELS_TO_ADD}" 2> "${pr_create_error_file}")"; then
+  pr_create_error="$(< "${pr_create_error_file}")"
   if echo "${pr_create_error}" | grep -q 'GitHub Actions is not permitted to create or approve pull requests'; then
     log_error "Failed to create pull request due to insufficient permissions. Please ensure 'Allow GitHub Actions to create and approve pull requests' is enabled in your repository settings (Settings > Actions > General > Workflow permissions). Refer to the README for more details."
     exit 1

@@ -6,12 +6,12 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 # Accept the spellings that getBooleanInput of @actions/core accepts.
 validate_bool() {
   case "$1" in
-  true | True | TRUE | false | False | FALSE)
-    return 0
-    ;;
-  *)
-    return 1
-    ;;
+    true | True | TRUE | false | False | FALSE)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
   esac
 }
 
@@ -21,11 +21,11 @@ if [[ "${LABEL_MAJOR}${LABEL_MINOR}${LABEL_PATCH}" == *$'\n'* ]]; then
 fi
 
 case "${MANUAL_BUMP_TYPE}" in
-major | minor | patch | '') ;;
-*)
-  log_error "manual-bump-type must be one of 'major', 'minor', 'patch', or empty."
-  exit 1
-  ;;
+  major | minor | patch | '') ;;
+  *)
+    log_error "manual-bump-type must be one of 'major', 'minor', 'patch', or empty."
+    exit 1
+    ;;
 esac
 
 if [[ ${GITHUB_EVENT_NAME} == 'workflow_dispatch' && -z ${MANUAL_BUMP_TYPE} ]]; then
@@ -34,11 +34,11 @@ if [[ ${GITHUB_EVENT_NAME} == 'workflow_dispatch' && -z ${MANUAL_BUMP_TYPE} ]]; 
 fi
 
 case "${AUTO_MERGE}" in
-merge | squash | rebase | '') ;;
-*)
-  log_error "Invalid auto-merge value '${AUTO_MERGE}': expected 'merge', 'squash', or 'rebase' (leave empty to disable)."
-  exit 1
-  ;;
+  merge | squash | rebase | '') ;;
+  *)
+    log_error "Invalid auto-merge value '${AUTO_MERGE}': expected 'merge', 'squash', or 'rebase' (leave empty to disable)."
+    exit 1
+    ;;
 esac
 
 if ! validate_bool "${UPDATE_MAJOR_MINOR_TAGS}"; then

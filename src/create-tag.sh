@@ -25,10 +25,10 @@ new_version="${BASH_REMATCH[2]}"
 echo "Extracted versions: previous=${previous_version}, new=${new_version}"
 
 # Extract major and minor versions
-previous_major_version="$(cut -d. -f1 <<<"${previous_version}")"
-previous_minor_version="$(cut -d. -f1,2 <<<"${previous_version}")"
-new_major_version="$(cut -d. -f1 <<<"${new_version}")"
-new_minor_version="$(cut -d. -f1,2 <<<"${new_version}")"
+previous_major_version="$(cut -d. -f1 <<< "${previous_version}")"
+previous_minor_version="$(cut -d. -f1,2 <<< "${previous_version}")"
+new_major_version="$(cut -d. -f1 <<< "${new_version}")"
+new_minor_version="$(cut -d. -f1,2 <<< "${new_version}")"
 
 # Create full version tag (e.g., v1.2.3)
 echo "Creating new tag: v${new_version}"
