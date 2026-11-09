@@ -15,8 +15,7 @@ incrementing the version number based on the labels applied to the PR.
 
 - Automatically determines the version bump type based on PR labels.
 - Supports manual workflow dispatch with an explicitly selected bump type.
-- Uses [`bump-my-version`](https://github.com/callowayproject/bump-my-version)
-  to increment the version according to Semantic Versioning.
+- Uses [`bump-my-version`](https://github.com/callowayproject/bump-my-version) to increment the version according to Semantic Versioning.
 - Creates a new branch and a PR for the version bump.
   - Optionally enables auto-merge on that PR.
 - Generates a corresponding Git tag once the version bump PR is merged.
@@ -324,8 +323,8 @@ For more details, refer to the official [`bump-my-version` documentation](https:
    - A Git tag (`vX.Y.Z`) is pushed to mark the new release.
 
 6. Optionally creates a GitHub release
-   - If `create-release` is `true`, a GitHub release is created for the new tag
-     with automatically generated release notes.
+   - If `create-release` is `true`, a GitHub release is created
+     for the new tag with automatically generated release notes.
 
 ### Tag Management
 
