@@ -55,7 +55,7 @@ jobs:
 
     steps:
       - name: Bump version
-        uses: conjikidow/bump-version-action@v4.2.4
+        uses: conjikidow/bump-version-action@v4.3.0
         with:
           label-major: major update
           label-minor: minor update
@@ -103,7 +103,7 @@ jobs:
           permission-pull-requests: write
 
       - name: Bump version
-        uses: conjikidow/bump-version-action@v4.2.4
+        uses: conjikidow/bump-version-action@v4.3.0
         with:
           label-major: major update
           label-minor: minor update
@@ -148,7 +148,7 @@ jobs:
 
     steps:
       - name: Bump version
-        uses: conjikidow/bump-version-action@v4.2.4
+        uses: conjikidow/bump-version-action@v4.3.0
         with:
           label-major: major update
           label-minor: minor update
@@ -183,7 +183,7 @@ jobs:
     steps:
       - name: Bump version
         id: bump-version
-        uses: conjikidow/bump-version-action@v4.2.4
+        uses: conjikidow/bump-version-action@v4.3.0
 
       # This step is just a placeholder. You can replace it with your own script or external tools.
       - name: Create release notes
