@@ -10,6 +10,8 @@ new_version_tag="v${NEW_VERSION}"
 # Create GitHub release
 echo "Creating GitHub release for tag: ${new_version_tag}"
 # --generate-notes will automatically generate release notes based on git history
-gh release create "${new_version_tag}" --target="${PR_MERGE_COMMIT_SHA}" --generate-notes
+release_url="$(gh release create "${new_version_tag}" --target="${PR_MERGE_COMMIT_SHA}" --generate-notes)"
 
-echo 'GitHub release created successfully.'
+echo "GitHub release created successfully: ${release_url}"
+
+write_output 'release-url' "${release_url}"
